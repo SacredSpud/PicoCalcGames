@@ -233,7 +233,7 @@ For x=1 To 20
   Pause 2
 Next x
 
-Do Until i$=chr$27)
+Do Until i$=chr$(27)
   If OldPlayerX<>PlayerX Or OldPlayerY<>PlayerY Or PlayerOrientation<>OldPlayerOrientation Then
     x=OldPlayerX
     y=OldPlayerY
