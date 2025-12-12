@@ -191,7 +191,7 @@ On error abort
 CLS
 Do
   clrbox
-  Text 0,0,title$
+  Text 0,0,title$+String$(20,32)
   page$="  "+recordname$+Str$(currentrecord)
   Text 319-(8*(Len(page$))),0,page$
   Line 0,15,320,15
@@ -750,3 +750,4 @@ Do
     End Select
   Loop Until newpage=1 Or quit=1
 Loop Until quit=1
+
