@@ -614,12 +614,13 @@ Do
   ShowTitle
   Color RGB(white),RGB(black)
   Font 1
-  Text 144,140,Chr$(38),,10,4,RGB(red)
+  Text 144,160,Chr$(38),,10,4,RGB(red)
   Box 130,120,60,100,,RGB(green)
   Line 40,90,130,120,,RGB(green)
   Line 40,260,130,220,,RGB(green)
   Line 190,120,279,90,,RGB(green)
   Line 190,220,279,260,,RGB(green)
+  Text 92,260,"Press F1 for Help",,,,RGB(white)
   Text 30,272,"%$#",,9,2,RGB(yellow)
   Text 30,288," !"+Chr$(34),,9,2,RGB(brown)
   Text 78,288,"Sacred Potato Productions",,1,,RGB(white)
@@ -628,6 +629,7 @@ Do
   AnyKey
   If i$=Chr$(27) Then CLS :End
   If i$=Chr$(145) Then
+    CLS
     ShowHelp
   End If
 ' Initialize player variables
@@ -1001,7 +1003,7 @@ Do
         Text 0,((xmax+1)*12)+3,Message$+String$(10,32),,1,,RGB(white),RGB(black)
       End If
       Text 240,((xmax+1)*12)+3,Chr$(46),,10,,RGB(cobalt),RGB(black)
-      Text 248,((xmax+1)*12)+3,Chr$(46),,10,,RGB(cobalt),RGB(black)
+      Text 248,((xmax+1)*12)+3,Str$(eye),,1,,RGB(white),RGB(black)
       If HaveKey=1 Then
         Text 312,((xmax+1)*12)+3,Chr$(33),,10,,RGB(yellow)
       Else
@@ -1162,315 +1164,317 @@ Do
           Next t
         End If
       Else
-        Select Case s(px,py)
-        Case 0,2,3
-          'Take no action
-        Case 4 ' Portal 1
-          locator=1
-          px=exx
-          py=exy
-          PlayQueue$="587 X 466 X 587 X 440 X 349 X 440 X 349 X 440 X "
-        Case 5 ' Portal 2
-          locator=1
-          px=epx
-          py=epy
-          PlayQueue$="554 X 466 X 554 X 466 X 440 X 349 X 440 X 349 X "
-        Case 6 ' Coins
-          gp=gp+Int(Rnd*12)+1
-          s(px,py)=0
-          PlayQueue$="784 1568 X "
-        Case 8 ' Heart
-          CatchKeys
-          SaveMessage=1
-          lh=Int(Rnd*6)+1
-          hp=hp+lh
-          s(px,py)=0
-          PlayQueue$="494|330 X 554|370 X 494|392 X 554|440 X 587|370 X X X X X X X "
-        Case 9,13 ' Trap
-          If px<>oldx Or py<>oldy Then
-            lh=Int(Rnd*4)+1
-            lg=Int(Rnd*8)+1
-            hp=hp-lh
-            gp=gp-lg
-            message$="You walked into a trap! -"+Str$(lh)+" HP, -"+Str$(lg)+" GP"
-            s(px,py)=13
-            PlayQueue$="165 175 147|147 X X "
-          End If
-          SaveMessage=1
-        Case 10 ' Chest
-          CatchKeys
-          SaveMessage=1
-          If HaveKey=1 Then
-            lg=Int(Rnd*12)+13
-            gp=gp+lg
-            lh=Int(Rnd*5)+1
-            If lh<5 Then hp=hp+lh
+        If dead<>2 Then
+          Select Case s(px,py)
+            Case 0,2,3
+              'Take no action
+            Case 4 ' Portal 1
+              locator=1
+              px=exx
+              py=exy
+              PlayQueue$="587 X 466 X 587 X 440 X 349 X 440 X 349 X 440 X "
+            Case 5 ' Portal 2
+              locator=1
+              px=epx
+              py=epy
+              PlayQueue$="554 X 466 X 554 X 466 X 440 X 349 X 440 X 349 X "
+          Case 6 ' Coins
+            gp=gp+Int(Rnd*12)+1
             s(px,py)=0
-            PlayQueue$="784 1568 784 1568 784 1568 X "
-          Else
-            px=oldx
-            py=oldy
-            PlayQueue$="294 311 X 294 X "
-          End If
-        Case 11 ' Zap
-          zap=zap+1
-          s(px,py)=0
-          PlayQueue$="392|196 165|330 392|192 131|523 "
-        Case 12 ' Key
-          havekey=1
-          s(px,py)=0
-          PlayQueue$="1244|1244 1398|1398 "
-        Case 14 ' Grave
-          message$="Press enter to read the epitaph."
-        Case 15 ' Eye
-          PlayQueue$=EyeMusic$
-          eye=eye+1
-          s(px,py)=0
-        Case 17,18,19,20,21,22 ' Prizes
-          CatchKeys
-          Color RGB(white),RGB(black)
-          CLS
-          Text 32,8,Chr$(45+s(px,py)),,11,8,prizecolor(s(px,py)-15),RGB(black)
-          PlayQueue$="699|233 X X 587|294 X X 587|350 X X 699|233 X X 587|294 X X 587|350 X X 523|175 X X 466|220 X X 523|262 X X 587|175 X X 587|220 X X 587|262 X X 622|156 X X "
-          EndGame=1
-          Text 0,xmax*12,"Congratulations! You have found the",,1,,RGB(white),RGB(black)
-          Text 0,(xmax+1)*12,PrizeName$+"!",,,,RGB(white),RGB(black)
-          AnyKey
-          Box 0,xmax*12,320,24,,RGB(black),RGB(black)
-          Text 0,xmax*12,"Your quest is over. Press any key to"
-          Text 0,(xmax+1)*12,"take the elevator back to the surface."
-          CatchKeys
-          AnyKey
-          For t=0 To 160 Step 5
-            Box t,0,5,400,,RGB(lightgray),RGB(lightgray)
-            Box 314-t,0,5,400,,RGB(lightgray),RGB(lightgray)
-            Pause 50
-          Next t
-          Pause 2000
-          For t=160 To 0 Step -5
-            Box t,0,5,400,,RGB(black),RGB(black)
-            Box 314-t,0,5,400,,RGB(black),RGB(black)
-            Pause 50
-          Next t
-          CatchKeys
-          Dead=5
-        Case Else ' Monster
-          CatchKeys
-          If s(px,py)=7 Then
-            If Maze<25 Then
-              mon=Int(Rnd*(maze+5))+1
-            Else
-              mon=Int(Rnd*30)+1
+            PlayQueue$="784 1568 X "
+          Case 8 ' Heart
+            CatchKeys
+            SaveMessage=1
+            lh=Int(Rnd*6)+1
+            hp=hp+lh
+            s(px,py)=0
+            PlayQueue$="494|330 X 554|370 X 494|392 X 554|440 X 587|370 X X X X X X X "
+          Case 9,13 ' Trap
+            If px<>oldx Or py<>oldy Then
+              lh=Int(Rnd*4)+1
+              lg=Int(Rnd*8)+1
+              hp=hp-lh
+              gp=gp-lg
+              message$="You walked into a trap! -"+Str$(lh)+" HP, -"+Str$(lg)+" GP"
+              s(px,py)=13
+              PlayQueue$="165 175 147|147 X X "
             End If
-            s(px,py)=99+Mon
-          Else
-            Mon=s(px,py)-99
-          End If
-          Color RGB(white),RGB(black)
-          CLS
-          Text 32,8,Chr$(mon+31),,11,8,mc(mon),RGB(black)
-          If Mon=19 Then
-            Select Case Int(Rnd*5)+1
-              Case 1
-                MonName$="Dick Haverhill"
-              Case 2
-                MonName$="Dick Vanderhoof"
-              Case 3
-                MonName$="Dick Waltonberg"
-              Case 4
-                MonName$="Dick Cavendish"
-              Case 5
-                MonName$="Dick Astor"
-              Case 6
-                MonName$="Dick Vanderbilt"
-              Case 7
-                MonName$="Dick Rothschild"
-              Case 8
-                MonName$="Dick Mellon"
-              Case 9
-                MonName$="Dick Smith-Jones"
-              Case 10
-                MonName$="Dick Hearst"
-            End Select
-            If Rnd>.5 Then
+            SaveMessage=1
+          Case 10 ' Chest
+            CatchKeys
+            SaveMessage=1
+            If HaveKey=1 Then
+              lg=Int(Rnd*12)+13
+              gp=gp+lg
+              lh=Int(Rnd*5)+1
+              If lh<5 Then hp=hp+lh
+              s(px,py)=0
+              PlayQueue$="784 1568 784 1568 784 1568 X "
+            Else
+              px=oldx
+              py=oldy
+              PlayQueue$="294 311 X 294 X "
+            End If
+          Case 11 ' Zap
+            zap=zap+1
+            s(px,py)=0
+            PlayQueue$="392|196 165|330 392|192 131|523 "
+          Case 12 ' Key
+            havekey=1
+            s(px,py)=0
+            PlayQueue$="1244|1244 1398|1398 "
+          Case 14 ' Grave
+            message$="Press enter to read the epitaph."
+          Case 15 ' Eye
+            PlayQueue$=EyeMusic$
+            eye=eye+1
+            s(px,py)=0
+          Case 17,18,19,20,21,22 ' Prizes
+            CatchKeys
+            Color RGB(white),RGB(black)
+            CLS
+            Text 32,8,Chr$(45+s(px,py)),,11,8,prizecolor(s(px,py)-15),RGB(black)
+            PlayQueue$="699|233 X X 587|294 X X 587|350 X X 699|233 X X 587|294 X X 587|350 X X 523|175 X X 466|220 X X 523|262 X X 587|175 X X 587|220 X X 587|262 X X 622|156 X X "
+            EndGame=1
+            Text 0,xmax*12,"Congratulations! You have found the",,1,,RGB(white),RGB(black)
+            Text 0,(xmax+1)*12,PrizeName$+"!",,,,RGB(white),RGB(black)
+            AnyKey
+            Box 0,xmax*12,320,24,,RGB(black),RGB(black)
+            Text 0,xmax*12,"Your quest is over. Press any key to"
+            Text 0,(xmax+1)*12,"take the elevator back to the surface."
+            CatchKeys
+            AnyKey
+            For t=0 To 160 Step 5
+              Box t,0,5,400,,RGB(lightgray),RGB(lightgray)
+              Box 314-t,0,5,400,,RGB(lightgray),RGB(lightgray)
+              Pause 50
+            Next t
+            Pause 2000
+            For t=160 To 0 Step -5
+              Box t,0,5,400,,RGB(black),RGB(black)
+              Box 314-t,0,5,400,,RGB(black),RGB(black)
+              Pause 50
+            Next t
+            CatchKeys
+            Dead=5
+          Case Else ' Monster
+            CatchKeys
+            If s(px,py)=7 Then
+              If Maze<25 Then
+                mon=Int(Rnd*(maze+5))+1
+              Else
+                mon=Int(Rnd*30)+1
+              End If
+              s(px,py)=99+Mon
+            Else
+              Mon=s(px,py)-99
+            End If
+            Color RGB(white),RGB(black)
+            CLS
+            Text 32,8,Chr$(mon+31),,11,8,mc(mon),RGB(black)
+            If Mon=19 Then
               Select Case Int(Rnd*5)+1
                 Case 1
-                  MonName$=MonName$+", Esq."
-                Case 1
-                  MonName$=MonName$+", OBE"
-                Case 1
-                  MonName$=MonName$+", PhD"
-                Case 1
-                  MonName$=MonName$+", MD"
-                Case 1
-                  MonName$=MonName$+", DDS"
+                  MonName$="Dick Haverhill"
+                Case 2
+                  MonName$="Dick Vanderhoof"
+                Case 3
+                  MonName$="Dick Waltonberg"
+                Case 4
+                  MonName$="Dick Cavendish"
+                Case 5
+                  MonName$="Dick Astor"
+                Case 6
+                  MonName$="Dick Vanderbilt"
+                Case 7
+                  MonName$="Dick Rothschild"
+                Case 8
+                  MonName$="Dick Mellon"
+                Case 9
+                  MonName$="Dick Smith-Jones"
+                Case 10
+                  MonName$="Dick Hearst"
               End Select
-            End If
-            Article$=""
-          Else
-            MonName$=Monster$(mon)
-            If Instr("AEIOU",MonName$) Then
-              Article$="An "
-            Else
-              Article$="A "
-            End If
-          End If
-          Box 0,xmax*12,320,24,,RGB(black),RGB(black)
-          Color RGB(white)
-          Select Case Int(Rnd*2)+1
-            Case 1
-              Text 0,xmax*12,Article$+MonName$+" attacks!"
-            Case 2
-              Text 0,xmax*12,Article$+MonName$+" startles you!"
-          End Select
-          Print
-          Print "F)ight, R)un, or N)egotiate?";
-          Do
-            i$=LCase$(Inkey$)
-          Loop Until Instr("rfn",i$)
-          Box 0,xmax*12,320,24,,RGB(black),RGB(black)
-          Text 0,xmax*12,""
-          Fight=0
-          Select Case i$
-            Case "f"
-              Fight=1
-            Case "r"
-              If Rnd<.7 Then
-                If Len(MonName$)<18 Then
-                  RunMsg$="r way."
-                Else
-                  RunMsg$="."
-                End If
-                If Mon<>19 Then Print "The ";
-                Print MonName$+" blocks you"+RunMsg$
-                Fight=1
-                SuccesfulNeg=1
-                AnyKey
-              Else
-                Select Case Int(Rnd*3)+1
+              If Rnd>.5 Then
+                Select Case Int(Rnd*5)+1
                   Case 1
-                    RunMsg$="escape"
-                  Case 2
-                    RunMsg$="flee"
-                  Case 3
-                    RunMsg$="evade"
+                    MonName$=MonName$+", Esq."
+                  Case 1
+                    MonName$=MonName$+", OBE"
+                  Case 1
+                    MonName$=MonName$+", PhD"
+                  Case 1
+                    MonName$=MonName$+", MD"
+                  Case 1
+                    MonName$=MonName$+", DDS"
                 End Select
-                If Mon<>19 Then RunMsg$=RunMsg$+" the"
-                Print "You "+RunMsg$+" "+MonName$+"."
-                successfulneg=1
-                AnyKey
               End If
-            Case "n"
-              lg=Int(Rnd*mon)+1
-              If Rnd<.4 Then
-                Print "It will not negotiate with you."
-                Print "You will have to fight.";
-                AnyKey
-                successfulNeg=1
-                fight=1
+              Article$=""
+            Else
+              MonName$=Monster$(mon)
+              If Instr("AEIOU",MonName$) Then
+                Article$="An "
               Else
-                Print "It wants "+Str$(lg)+" GP. You have "+Str$(gp)+"."
-                If lg>gp Then
-                  Print "You will have to fight.";
-                  Fight=1
-                  AnyKey
-                Else
-                  Print "Do you accept? (Y/N)";
-                  Do
-                    i$=LCase$(Inkey$)
-                  Loop Until Instr("yn",i$)
-                  Select Case i$
-                    Case "y"
-                      successfulneg=1
-                      gp=gp-lg
-                    Case "n"
-                      Fight=1
-                  End Select
-                End If
+                Article$="A "
               End If
+            End If
+            Box 0,xmax*12,320,24,,RGB(black),RGB(black)
+            Color RGB(white)
+            Select Case Int(Rnd*2)+1
+              Case 1
+                Text 0,xmax*12,Article$+MonName$+" attacks!"
+              Case 2
+                Text 0,xmax*12,Article$+MonName$+" startles you!"
             End Select
+            Print
+            Print "F)ight, R)un, or N)egotiate?";
+            Do
+              i$=LCase$(Inkey$)
+            Loop Until Instr("rfn",i$)
             Box 0,xmax*12,320,24,,RGB(black),RGB(black)
             Text 0,xmax*12,""
-            If Fight=1 Then
-              successfulneg=1
-              s(px,py)=0
-              If Rnd<.3 Then
-                lh=0
-              Else
-                lh=Int(Rnd*mon)+1
-              End If
-              hp=hp-lh
-              Select Case Int(Rnd*5)+1
-                Case 1
-                  RunMsg$="slain"
-                Case 2
-                  RunMsg$="beaten"
-                Case 3
-                  RunMsg$="killed"
-                Case 4
-                  RunMsg$="vanquished"
-                Case 5
-                  RunMsg$="defeated"
+            Fight=0
+            Select Case i$
+              Case "f"
+                Fight=1
+              Case "r"
+                If Rnd<.7 Then
+                  If Len(MonName$)<18 Then
+                    RunMsg$="r way."
+                  Else
+                    RunMsg$="."
+                  End If
+                  If Mon<>19 Then Print "The ";
+                  Print MonName$+" blocks you"+RunMsg$
+                  Fight=1
+                  SuccesfulNeg=1
+                  AnyKey
+                Else
+                  Select Case Int(Rnd*3)+1
+                    Case 1
+                      RunMsg$="escape"
+                    Case 2
+                      RunMsg$="flee"
+                    Case 3
+                      RunMsg$="evade"
+                  End Select
+                  If Mon<>19 Then RunMsg$=RunMsg$+" the"
+                  Print "You "+RunMsg$+" "+MonName$+"."
+                  successfulneg=1
+                  AnyKey
+                End If
+              Case "n"
+                lg=Int(Rnd*mon)+1
+                If Rnd<.4 Then
+                  Print "It will not negotiate with you."
+                  Print "You will have to fight.";
+                  AnyKey
+                  successfulNeg=1
+                  fight=1
+                Else
+                  Print "It wants "+Str$(lg)+" GP. You have "+Str$(gp)+"."
+                  If lg>gp Then
+                    Print "You will have to fight.";
+                    Fight=1
+                    AnyKey
+                  Else
+                    Print "Do you accept? (Y/N)";
+                    Do
+                      i$=LCase$(Inkey$)
+                    Loop Until Instr("yn",i$)
+                    Select Case i$
+                      Case "y"
+                        successfulneg=1
+                        gp=gp-lg
+                      Case "n"
+                        Fight=1
+                    End Select
+                  End If
+                End If
               End Select
-              If hp>0 Then
-                Print "You have "+RunMsg$+" the "+MonName$+"."
-                PlayQueue$="523|262 X 440|220 X 523|196 X X X 699|175 X X X X X X X 880|131 X X X X X X X 784|165 X X X X X X X 523|131 X 440|147 X 699|175 X X X X X X X 880|175 X X X X X X X 932|262 X X X X X X X "
-              Else
-                Select Case Int(Rnd*2)+1
+              Box 0,xmax*12,320,24,,RGB(black),RGB(black)
+              Text 0,xmax*12,""
+              If Fight=1 Then
+                successfulneg=1
+                s(px,py)=0
+                If Rnd<.3 Then
+                  lh=0
+                Else
+                  lh=Int(Rnd*mon)+1
+                End If
+                hp=hp-lh
+                Select Case Int(Rnd*5)+1
                   Case 1
-                    Print "You have died."
+                    RunMsg$="slain"
                   Case 2
-                    Print "The "+MonName$+" killed you."
+                    RunMsg$="beaten"
+                  Case 3
+                    RunMsg$="killed"
+                  Case 4
+                    RunMsg$="vanquished"
+                  Case 5
+                    RunMsg$="defeated"
                 End Select
-            End If
-            If lh=0 Then
-              Print "You received no damage.";
-            Else
-              Print "It did "+Str$(lh)+" HP of damage.";
-            End If
-            If successfulneg=1 Then
-              gameover=1
-              AnyKey
-              gameover=0
-              successfulneg=0
-            End If
+                If hp>0 Then
+                  Print "You have "+RunMsg$+" the "+MonName$+"."
+                  PlayQueue$="523|262 X 440|220 X 523|196 X X X 699|175 X X X X X X X 880|131 X X X X X X X 784|165 X X X X X X X 523|131 X 440|147 X 699|175 X X X X X X X 880|175 X X X X X X X 932|262 X X X X X X X "
+                Else
+                  Select Case Int(Rnd*2)+1
+                    Case 1
+                      Print "You have died."
+                    Case 2
+                      Print "The "+MonName$+" killed you."
+                  End Select
+                End If
+                If lh=0 Then
+                  Print "You received no damage.";
+                Else
+                  Print "It did "+Str$(lh)+" HP of damage.";
+                End If
+                If successfulneg=1 Then
+                  gameover=1
+                  AnyKey
+                  gameover=0
+                  successfulneg=0
+                End If
+              End If
+              CLS
+              drawmap
+              mazeline
+            End Select
           End If
-          CLS
-          drawmap
-          mazeline
+        End If
+        If SaveMessage=1 Or px<>oldx Or py<>oldy Then
+          Text (oldy-1)*8,oldx*12,"",,,,,RGB(black)
+          t=oldx
+          j=oldy
+          SaveMessage=0
+          Font 10
+          DrawItem
+          Font 1
+        End If
+        If gp<1 Then gp=0
+        If hp<1 Then Dead=4
+      Loop Until dead<>0
+    Loop While dead=3
+    If dead=1 Or Dead=4 Then
+      If dead=1 Then
+        Select Case Int(Rnd*4)+1
+          Case 1
+            DeathMessage$="Death by electrocution."
+          Case 2
+            DeathMessage$="Watch out for those walls."
+          Case 3
+            DeathMessage$="Avoid the walls next time."
+          Case 4
+            DeathMessage$="Walked right into that one, didn't you?"
         End Select
+        Text 160-((Len(deathmessage$)/2)*8),160,DeathMessage$,,1,,RGB(white),RGB(black)
       End If
-      If SaveMessage=1 Or px<>oldx Or py<>oldy Then
-        Text (oldy-1)*8,oldx*12,"",,,,,RGB(black)
-        t=oldx
-        j=oldy
-        SaveMessage=0
-        Font 10
-        DrawItem
-        Font 1
-      End If
-      If gp<1 Then gp=0
-      If hp<1 Then Dead=4
-    Loop Until dead<>0
-  Loop While dead=3
-  If dead=1 Or Dead=4 Then
-    If dead=1 Then
-      Select Case Int(Rnd*4)+1
-        Case 1
-          DeathMessage$="Death by electrocution."
-        Case 2
-          DeathMessage$="Watch out for those walls."
-        Case 3
-          DeathMessage$="Avoid the walls next time."
-        Case 4
-          DeathMessage$="Walked right into that one, didn't you?"
-      End Select
-      Text 160-((Len(deathmessage$)/2)*8),160,DeathMessage$,,1,,RGB(white),RGB(black)
-    End If
-    Box 0,110,320,102,,RGB(black),RGB(black)
-    Color RGB(white),RGB(black)
-    Text 0,120,"  GAME OVER   ",,1,3,RGB(RUST),RGB(black)
-    Text 0,180,"     Press E to write your epitaph",,1,,RGB(white),RGB(black)
+      Box 0,110,320,102,,RGB(black),RGB(black)
+      Color RGB(white),RGB(black)
+      Text 0,120,"  GAME OVER   ",,1,3,RGB(RUST),RGB(black)
+      Text 0,180,"     Press E to write your epitaph",,1,,RGB(white),RGB(black)
     Text 0,192,"          or any key to quit.",,,,RGB(white),RGB(black)
     GameOver=1
     PlayQueue$="370|277 X X X X X X X X X X X X X X X 349|262 X X X X X X X 262|220 X X X X X X X 277|233 X X X X X X X 262|233 X X X X X X X 233|233 X X X X X X X "
