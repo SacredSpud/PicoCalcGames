@@ -178,26 +178,53 @@ End DefineFont
 
 
 Sub ShowHelp
-Box 4,112,312,150,1,RGB(red),RGB(black)
-  Text 19,120,"6897",,10,,RGB(white),RGB(black)
-  Text 72,120,"To move",,1,,RGB(white)
-  Text 8,144,"[Space] Use ",,,,RGB(white)
+  Box 4,24,312,274,1,RGB(red),RGB(black)
+  Text 128,32,"PicoMaze",,,,RGB(orange)
+  Text 19,48,"You are looking for this: ",,1,,RGB(white)
+  Font 10
+  Color PrizeColor(PrizeType)
+  Print Chr$(46+PrizeType);
+  Font 1
+  Color RGB(white)
+  Print ". It's on"
+  Text 19,60,"the 30th level of th"
+  If Right$(MazeType$,1)<>"s" Then
+    Print "is";
+  Else
+    Print "ese";
+  End If
+  Print " "+MazeType$+"."
+  Text 19,84,"6897",,10,,RGB(white),RGB(black)
+  Text 72,84,"To move",,1,,RGB(white)
+  Text 8,108,"[Space] Use ",,,,RGB(white)
   Color RGB(cyan)
   Font 10
   Print Chr$(40);
   Color RGB(white)
   Font 1
   Print " to remove a wall"
-  Text 32,168,"E    Use "
+  Text 32,132,"E    Use "
   Font 10
   Color RGB(cobalt)
   Print ".";
   Font 1
   Color RGB(white)
   Print " to show traps & monsters"
-  Text 32,192,"L    To locate player (and prize if"
-  Text 72,204,"on level 30)"
-  Text 26,228,"A key ("
+  Text 32,156,"L    To locate player (and prize if"
+  Text 72,182,"on level 30)"
+  Text 32,194,"R    To rest and trade 5"
+  Color RGB(gold)
+  Font 10
+  Print "'";
+  Color RGB(white)
+  Font 1
+  Print " for 1";
+  Color RGB(pink)
+  Font 10
+  Print Chr$(34)
+  Font 1
+  Color RGB(white)
+  Text 26,216,"A key ("
   Font 10
   Color RGB(yellow)
   Print "!";
@@ -210,7 +237,9 @@ Box 4,112,312,150,1,RGB(red),RGB(black)
   Font 1
   Color RGB(white)
   Print ")"
-  Text 84,240,"on the same level."
+  Text 84,226,"on the same level."
+  Text 19,250,"Do not touch the electrified walls."
+  Text 24,274,"The edges of the maze wrap around."
   AnyKey
 End Sub
 
@@ -288,25 +317,25 @@ Sub DrawItem
       Color RGB(gray),RGB(black)
       char=45
     Case 15
-      Color RGB(cobalt)
+      Color RGB(cobalt),RGB(black)
       char=46
     Case 16
-      Color RGB(beige)
+      Color RGB(beige),RGB(black)
       char=47
     Case 17
-      Color RGB(blue)
+      Color RGB(blue),RGB(black)
       char=48
     Case 18
-      Color RGB(orange)
+      Color RGB(orange),RGB(black)
       char=49
     Case 19
-      Color RGB(salmon)
+      Color RGB(salmon),RGB(black)
       char=50
     Case 20
-      Color RGB(gray)
+      Color RGB(gray),RGB(black)
       char=51
     Case 21
-      Color RGB(gold)
+      Color RGB(gold),RGB(black)
       char=52
     Case Else
       Color RGB(red),RGB(black)
@@ -338,11 +367,15 @@ Sub DrawMap
     Next
     Print
   Next
+  DrawExit
+  Text 0,0,mtitle$,,1,,RGB(black),RGB(white)
+End Sub
+
+Sub DrawExit
   If Maze<>30 Then
     Font 1
     Text (exity-1)*8,(exitx)*12,"EXIT->",,,,RGB(red),RGB(white)
   End If
-Text 0,0,mtitle$,,1,,RGB(black),RGB(white)
 End Sub
 
 Sub MazeLine
@@ -536,7 +569,6 @@ mc(26)=RGB(lilac)
 Monster$(27)="Shambler"
 mc(27)=RGB(pink)
 Monster$(28)="Hound of Tindalos"
-
 mc(28)=RGB(cerulean)
 Monster$(29)="Night-Gaunt"
 mc(29)=RGB(gray)
@@ -567,6 +599,7 @@ Music$(14)="330|196 X X X X X X X 330|220 X X X X X X X 659|196 X X X X X X X 58
 Music$(15)="659|330 X X X 330|165 X 699|330 X 659|350 X X X X X X X 659|330 X X X 330|165 X 699|330 X 587|294 X X X X X X X X "
 Music$(16)="659|330 X X X 330|165 X 699|330 X 587|294 X X X X X X X X 659|330 X X X 330|165 X 699|330 X 659|350 X X X X X X X "
 MusicCount=16
+HeartSong$="494|330 X 554|370 X 494|392 X 554|440 X 587|370 X X X X X X X "
 
 NoteLength=20
 PauseLength=20
@@ -627,6 +660,73 @@ Do
   Text 80,304,"Some rights reserved.",,1,,RGB(white)
   CatchKeys
   AnyKey
+  PrizeType=Int(Rnd*6)+1
+  Do
+    mtitle$=""
+    Select Case Int(Rnd*14)+1
+      Case 1
+        mtitle$="Dungeon"
+      Case 2
+        mtitle$="Maze"
+      Case 3
+        mtitle$="Mines"
+      Case 4
+        mtitle$="Caves"
+      Case 5
+        mtitle$="Keep"
+      Case 6
+        mtitle$="Underworld"
+      Case 7
+        mtitle$="Basement"
+      Case 8
+        mtitle$="Pits"
+      Case 9
+        mtitle$="AirBnB"
+      Case 10
+        mtitle$="Guest Bedroom"
+      Case 11
+        mtitle$="Castle"
+      Case 12
+        mtitke$="Fortress"
+      Case 13
+        mtitle$="Pillow Fort"
+      Case 14
+        mtitle$="Blanket Fort"
+    End Select
+    mazetype$=mtitle$
+    mtitle$=mtitle$+" of "
+    Select Case Int(Rnd*12)+1
+      Case 1
+        mtitle$=mtitle$+"Narrative Convenience"
+      Case 2
+        mtitle$=mtitle$+"Procrastination"
+      Case 4
+        mtitle$=mtitle$+"Poor Game Design"
+      Case 3
+        mtitle$=mtitle$+"Utter Boredom"
+      Case 4
+        mtitle$=mtitle$+"Mystical B.S."
+      Case 5
+        mtitle$=mtitle$+"Tedium"
+      Case 6
+        mtitle$=mtitle$+"Toils & Troubles"
+      Case 7
+        mtitle$=mtitle$+"Wasted Potential"
+      Case 8
+        mtitle$=mtitle$+"Stuff"
+      Case 9
+        mtitle$=mtitle$+"Tonal Uncertainty"
+      Case 10
+        mtitle$=mtitle$+"Aimless Wandering"
+      Case 11
+        mtitle$=mtitle$+"Crushing Pointlessness"
+      Case 12
+        mtitle$=mtitle$+"Mediocre Ideas"
+    End Select
+    mtitle$="The "+mtitle$
+  Loop Until Len(Mtitle$)<40
+  mlen=20-(Len(mtitle$)/2)
+  mtitle$=String$(mlen,32)+mtitle$+String$(mlen,32)+" "
   If i$=Chr$(27) Then CLS :End
   If i$=Chr$(145) Then
     CLS
@@ -695,7 +795,7 @@ Do
   Text 50,240,"Press N to change your name"
   Text 55,260, "or any other key to start."
   CatchKeys
-  anykey
+  AnyKey
   If LCase$(i$)="n" Then
     Box 0,160,320,72,,RGB(black),RGB(black)
     Text 154,160,Chr$(219)
@@ -718,71 +818,6 @@ Do
     AnyKey
   End If
   i$=""
-  Do
-    mtitle$=""
-    Select Case Int(Rnd*14)+1
-      Case 1
-        mtitle$="Dungeon"
-      Case 2
-        mtitle$="Maze"
-      Case 3
-        mtitle$="Mines"
-      Case 4
-        mtitle$="Caves"
-      Case 5
-        mtitle$="Keep"
-      Case 6
-        mtitle$="Underworld"
-      Case 7
-        mtitle$="Basement"
-      Case 8
-        mtitle$="Pits"
-      Case 9
-        mtitle$="AirBnB"
-      Case 10
-        mtitle$="Guest Bedroom"
-      Case 11
-        mtitle$="Castle"
-      Case 12
-        mtitke$="Fortress"
-      Case 13
-        mtitle$="Pillow Fort"
-      Case 14
-        mtitle$="Blanket Fort"
-    End Select
-    mtitle$=mtitle$+" of "
-    Select Case Int(Rnd*12)+1
-      Case 1
-        mtitle$=mtitle$+"Narrative Convenience"
-      Case 2
-        mtitle$=mtitle$+"Procrastination"
-      Case 4
-        mtitle$=mtitle$+"Poor Game Design"
-      Case 3
-        mtitle$=mtitle$+"Utter Boredom"
-      Case 4
-        mtitle$=mtitle$+"Mystical B.S."
-      Case 5
-        mtitle$=mtitle$+"Tedium"
-      Case 6
-        mtitle$=mtitle$+"Toils & Troubles"
-      Case 7
-        mtitle$=mtitle$+"Wasted Potential"
-      Case 8
-        mtitle$=mtitle$+"Stuff"
-      Case 9
-        mtitle$=mtitle$+"Tonal Uncertainty"
-      Case 10
-        mtitle$=mtitle$+"Aimless Wandering"
-      Case 11
-        mtitle$=mtitle$+"Crushing Pointlessness"
-      Case 12
-        mtitle$=mtitle$+"Mediocre Ideas"
-    End Select
-    mtitle$="The "+mtitle$
-  Loop Until Len(Mtitle$)<40
-  mlen=20-(Len(mtitle$)/2)
-  mtitle$=String$(mlen,32)+mtitle$+String$(mlen,32)+" "
   Do
     prizename$=""
     Select Case Int(Rnd*10)+1
@@ -855,7 +890,6 @@ Do
         PrizeName$=PrizeName$+"Triumph"
     End Select
   Loop Until Len(PrizeName$)<40
-  PrizeType=Int(Rnd*6)+1
   Do
     EyeOn=0
     zapon=0
@@ -1061,9 +1095,15 @@ Do
           Text (j-1)*8,t*12,""
           DrawItem
         Next
+        DrawExit
         Font 1
       End If
       Select Case LCase$(i$)
+        Case "r"
+          If gp>4 Then
+            gp=gp-5
+            hp=hp+1
+          End If
         Case "e"
           If Eye>0 And EyeOn=0 Then
             eye=eye-1
@@ -1148,7 +1188,9 @@ Do
           zapon=0
           zap=zap-1
         Else
-          dead=1
+          hp=hp-10
+          If hp<1 Then dead=1
+          MazeLine
           For t=1 To 15
             If t/2=Int(t/2) Then
               wall=174
@@ -1157,11 +1199,15 @@ Do
               wall=173
               colr=RGB(red)
             End If
+
             Text (py-1)*8,px*12,Chr$(wall),,,,RGB(cyan),RGB(black)
             Text (oldy-1)*8,oldx*12,Chr$(53),,10,,colr,RGB(black)
             Play tone(Rnd*2000)+200,(Rnd*2000)+200,50
             Pause 50
           Next t
+          t=oldx
+          j=oldy
+          DrawItem
         End If
       Else
         If dead<>2 Then
@@ -1188,17 +1234,18 @@ Do
             lh=Int(Rnd*6)+1
             hp=hp+lh
             s(px,py)=0
-            PlayQueue$="494|330 X 554|370 X 494|392 X 554|440 X 587|370 X X X X X X X "
+            PlayQueue$=HeartSong$
           Case 9,13 ' Trap
             If px<>oldx Or py<>oldy Then
               lh=Int(Rnd*4)+1
               lg=Int(Rnd*8)+1
               hp=hp-lh
               gp=gp-lg
-              message$="You walked into a trap! -"+Str$(lh)+" HP, -"+Str$(lg)+" GP"
+              message$="You walked into a trap!"
               s(px,py)=13
               PlayQueue$="165 175 147|147 X X "
-            End If
+              If hp<1 Then Dead=4:Article$="":MonsterName$="a trap"
+           End If
             SaveMessage=1
           Case 10 ' Chest
             CatchKeys
