@@ -1034,14 +1034,10 @@ Do
     Line 0,((xmax+1)*12)+1,ymax*8,((xmax+1)*12)+1,,WallFG
     havekey=0
     Do
-      If Message$=OldMessage$ Then
+      If Message$="" Then
         MazeLine
       End If
-      If Message$<>OldMessage$ Then
-        oldMessage$=Message$
-        Text 0,((xmax+1)*12)+3,Message$+String$(10,32),,1,,RGB(white),RGB(black)
-      End If
-      If Left$(Message$,4)="Maze" then
+      If Message$="" Then
         Text 240,((xmax+1)*12)+3,Chr$(46),,10,,RGB(cobalt),RGB(black)
         Text 248,((xmax+1)*12)+3,Str$(eye),,1,,RGB(white),RGB(black)
         If HaveKey=1 Then
@@ -1058,6 +1054,10 @@ Do
         End If
         Text 280,((xmax+1)*12)+3,Chr$(40),,10,,zc,RGB(black)
         Text 288,((xmax+1)*12)+3,Str$(zap),,1,,RGB(white),RGB(black)
+      End If
+      If Message$<>"" Then
+        Text 0,((xmax+1)*12)+3,Message$+String$(10,32),,1,,RGB(white),RGB(black)
+        message$=""
       End If
       If locator=1 Then
         If Maze=30 Then
@@ -1206,15 +1206,19 @@ Do
               wall=173
               colr=RGB(red)
             End If
-
             Text (py-1)*8,px*12,Chr$(wall),,,,RGB(cyan),RGB(black)
             Text (oldy-1)*8,oldx*12,Chr$(53),,10,,colr,RGB(black)
             Play tone(Rnd*2000)+200,(Rnd*2000)+200,50
             Pause 50
           Next t
-          t=oldx
-          j=oldy
+          t=px
+          j=py
+          Text (py-1)*8,px*12,""
+          Font 10
           DrawItem
+          Font 1
+          px=oldx
+          py=oldy
         End If
       Else
         If dead<>2 Then
@@ -1250,7 +1254,7 @@ Do
               gp=gp-lg
               message$="You walked into a trap!"
               s(px,py)=13
-              PlayQueue$="165 175 147|147 X X "
+              PlayQueue$="165 X X 175 X X 147|147 X X X X "
               If hp<1 Then Dead=4:Article$="":MonsterName$="a trap"
            End If
             SaveMessage=1
@@ -1272,7 +1276,7 @@ Do
           Case 11 ' Zap
             zap=zap+1
             s(px,py)=0
-            PlayQueue$="392|196 165|330 392|192 131|523 "
+            PlayQueue$="392|196 X X X 165|330 X X X 392|192 X X X 131|523 X X X "
           Case 12 ' Key
             havekey=1
             s(px,py)=0
@@ -1582,6 +1586,7 @@ Do
             Print #1,maze
             Print #1,aname$
             Print #1,kline$
+            Print #1,gp
             For t=1 To 5
               Print #1,epline$(t)
             Next t
