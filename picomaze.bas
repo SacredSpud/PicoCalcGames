@@ -356,6 +356,10 @@ Sub TombStone
   For t=1 To 5
     Text 160-((Len(epline$(t))/2)*8),150+12*t),epline$(t),,,,RGB(white),RGB(black)
   Next
+  Text 160-((Len(Str$(kgp))+2)*4),234,"'",,10,,RGB(gold)
+  Font 1
+  Color RGB(white)
+  Print kgp
 End Sub
 
 Sub DrawMap
@@ -615,6 +619,7 @@ Open "picomaze.grv" For input As #1
 Input #1,kmaze
 Input #1,aname$
 Input #1,kline$
+Input #1,kgp
 For t=1 To 5
   Line Input #1,epline$(t)
 Next t
@@ -1036,22 +1041,24 @@ Do
         oldMessage$=Message$
         Text 0,((xmax+1)*12)+3,Message$+String$(10,32),,1,,RGB(white),RGB(black)
       End If
-      Text 240,((xmax+1)*12)+3,Chr$(46),,10,,RGB(cobalt),RGB(black)
-      Text 248,((xmax+1)*12)+3,Str$(eye),,1,,RGB(white),RGB(black)
-      If HaveKey=1 Then
-        Text 312,((xmax+1)*12)+3,Chr$(33),,10,,RGB(yellow)
-      Else
-        Text 312,((xmax+1)*12)+3," ",,1,,RGB(yellow)
+      If Left$(Message$,4)="Maze" then
+        Text 240,((xmax+1)*12)+3,Chr$(46),,10,,RGB(cobalt),RGB(black)
+        Text 248,((xmax+1)*12)+3,Str$(eye),,1,,RGB(white),RGB(black)
+        If HaveKey=1 Then
+          Text 312,((xmax+1)*12)+3,Chr$(33),,10,,RGB(yellow)
+        Else
+          Text 312,((xmax+1)*12)+3," ",,1,,RGB(yellow)
+        End If
+        oldZap=Zap
+        oldZapOn=ZapOn
+        If zapon=1 Then
+          zc=RGB(pink)
+        Else
+          zc=RGB(cyan)
+        End If
+        Text 280,((xmax+1)*12)+3,Chr$(40),,10,,zc,RGB(black)
+        Text 288,((xmax+1)*12)+3,Str$(zap),,1,,RGB(white),RGB(black)
       End If
-      oldZap=Zap
-      oldZapOn=ZapOn
-      If zapon=1 Then
-        zc=RGB(pink)
-      Else
-        zc=RGB(cyan)
-      End If
-      Text 280,((xmax+1)*12)+3,Chr$(40),,10,,zc,RGB(black)
-      Text 288,((xmax+1)*12)+3,Str$(zap),,1,,RGB(white),RGB(black)
       If locator=1 Then
         If Maze=30 Then
           Line 0,(prizex*12)+5,320,(prizex*12)+5,,RGB(cyan)
