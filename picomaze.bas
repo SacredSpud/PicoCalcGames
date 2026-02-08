@@ -178,7 +178,7 @@ End DefineFont
 
 
 Sub ShowHelp
-  Box 4,24,312,274,1,RGB(red),RGB(black)
+  Box 4,24,312,281,1,RGB(red),RGB(black)
   Text 128,32,"PicoMaze",,,,RGB(orange)
   Text 19,48,"You are looking for this: ",,1,,RGB(white)
   Font 10
@@ -211,8 +211,8 @@ Sub ShowHelp
   Color RGB(white)
   Print " to show traps & monsters"
   Text 32,156,"L    To locate player (and prize if"
-  Text 72,182,"on level 30)"
-  Text 32,194,"R    To rest and trade 5"
+  Text 72,168,"on level 30)"
+  Text 32,192,"R    To rest and trade 5"
   Color RGB(gold)
   Font 10
   Print "'";
@@ -224,7 +224,8 @@ Sub ShowHelp
   Print Chr$(34)
   Font 1
   Color RGB(white)
-  Text 26,216,"A key ("
+  Text 32,216,"A    For automation options",,,,RGB(white),RGB(black)
+  Text 26,238,"A key (",,,,RGB(white)
   Font 10
   Color RGB(yellow)
   Print "!";
@@ -237,14 +238,14 @@ Sub ShowHelp
   Font 1
   Color RGB(white)
   Print ")"
-  Text 84,226,"on the same level."
-  Text 19,250,"Do not touch the electrified walls."
-  Text 24,274,"The edges of the maze wrap around."
+  Text 84,250,"on the same level."
+  Text 19,274,"Do not touch the electrified walls."
+  Text 24,286,"The edges of the maze wrap around."
   AnyKey
 End Sub
 
 Sub catchkeys
-  For t=1 To 60
+  For t=1 To 15
     i$=Inkey$
   Next
 End Sub
@@ -813,7 +814,7 @@ Do
       nname$=nname$+(Mid$(Pname$,v,1))
       Text 160-(((Len(nname$)/2)+1)*8),160,NName$+Chr$(219)
       v=v+1
-    Loop Until i$=Chr$(27) Or v=1+Len(pname$)
+    Loop Until v=1+Len(pname$)
     AnyKey
     Text 0,240,String$(40,32)
     Text 160-(((Len(nname$)/2)+1)*8),160," "+NName$
@@ -1034,6 +1035,15 @@ Do
     Line 0,((xmax+1)*12)+1,ymax*8,((xmax+1)*12)+1,,WallFG
     havekey=0
     Do
+      If AutoRest=1 Then
+        Do
+          If gp>4 Then
+            PlayQueue$=HeartSong$
+            gp=gp-5
+            hp=hp+1
+          End If
+        Loop Until gp<5
+      End If
       If Message$="" Then
         MazeLine
       End If
@@ -1106,6 +1116,30 @@ Do
         Font 1
       End If
       Select Case LCase$(i$)
+        Case "a"
+          Box 25,125,270,50,1,RGB(red),RGB(black)
+          Text 120,130,"Automation",,1,,RGB(orange),RGB(black)
+          Text 30,142,"Choose an option for encounters:",,,,RGB(white),RGB(black)
+          Text 30,154,"F)ight, R)un, N)egotiate, C)ancel",,,,RGB(white),RGB(black)
+          Do
+            AutoFight$=LCase$(Inkey$)
+          Loop Until AutoFight$<>""
+          Box 25,125,270,50,1,RGB(black),RGB(black)
+          If Instr("rfn",autofight$)=0 Then AutoFight$=""
+          Box 25,137,270,38,1,RGB(red),RGB(black)
+          Text 120,142,"Automation",,,,RGB(orange)
+          Text 30,154,"Auto-rest when 5",,,,RGB(white),RGB(black)
+          Font 10
+          Color RGB(gold),RGB(black)
+          Print "'";
+          Font 1
+          Color RGB(white)
+          Print " collected? y/N";
+          Do
+            A$=LCase$(Inkey$)
+          Loop Until A$<>""
+          If a$="y" Then AutoRest=1
+          DrawMap
         Case "r"
           If gp>4 Then
             gp=gp-5
@@ -1255,7 +1289,7 @@ Do
               message$="You walked into a trap!"
               s(px,py)=13
               PlayQueue$="165 X X 175 X X 147|147 X X X X "
-              If hp<1 Then Dead=4:Article$="":MonsterName$="a trap"
+              If hp<1 Then Dead=5:Article$="":MonsterName$="a trap"
            End If
             SaveMessage=1
           Case 10 ' Chest
@@ -1377,21 +1411,26 @@ Do
               End If
             End If
             Box 0,xmax*12,320,24,,RGB(black),RGB(black)
-            Color RGB(white)
+
             Select Case Int(Rnd*2)+1
               Case 1
-                Text 0,xmax*12,Article$+MonName$+" attacks!"
+                Text 0,xmax*12,Article$+MonName$+" attacks!",,,,RGB(white)
               Case 2
-                Text 0,xmax*12,Article$+MonName$+" startles you!"
+                Text 0,xmax*12,Article$+MonName$+" startles you!",,,,RGB(white)
             End Select
-            Print
-            Print "F)ight, R)un, or N)egotiate?";
-            Do
-              i$=LCase$(Inkey$)
-            Loop Until Instr("rfn",i$)
+            If AutoFight$<>"" Then
+              i$=AutoFight$
+            Else
+              Print
+              Print "F)ight, R)un, or N)egotiate?";
+              Do
+                i$=LCase$(Inkey$)
+              Loop Until Instr("rfn",i$)
+            End If
             Box 0,xmax*12,320,24,,RGB(black),RGB(black)
             Text 0,xmax*12,""
             Fight=0
+            Color RGB(white),RGB(black)
             Select Case i$
               Case "f"
                 Fight=1
@@ -1483,11 +1522,18 @@ Do
                     Case 2
                       Print "The "+MonName$+" killed you."
                   End Select
+                  Dead=4
                 End If
                 If lh=0 Then
                   Print "You received no damage.";
                 Else
-                  Print "It did "+Str$(lh)+" HP of damage.";
+                  Print "It did "+Str$(lh);
+                  Font 10
+                  Color RGB(pink)
+                  Print Chr$(34);
+                  Font 1
+                  Color RGB(white)
+                  Print " of damage.";
                 End If
                 If successfulneg=1 Then
                   gameover=1
@@ -1512,10 +1558,9 @@ Do
           Font 1
         End If
         If gp<1 Then gp=0
-        If hp<1 Then Dead=4
       Loop Until dead<>0
     Loop While dead=3
-    If dead=1 Or Dead=4 Then
+    If dead=1 Or Dead=4 Or Dead=5 Then
       If dead=1 Then
         Select Case Int(Rnd*4)+1
           Case 1
@@ -1539,11 +1584,25 @@ Do
     catchkeys
     AnyKey
     If LCase$(i$)="e" Then
-      If dead=1 Then
-        kline$="Killed by electrocution."
-      Else
-        kline$="Killed by "+Article$+MonName$
-      End If
+      Select Case dead
+        Case 1
+          Select Case Int(Rnd*8)+1
+            Case 1
+              kline$="Killed by a freakin' wall."
+            Case 2
+              kline$="Killed by A WALL. I KNOW."
+            Case 3
+              kline$="Killed by a wall like a rube."
+            Case 4,5,6
+              kline$="Killed by an electrified wall."
+            Case Else
+              kline$="Killed by electrocution."
+          End Select
+        Case 4
+          kline$="Killed by "+Article$+MonName$
+        Case 5
+          kline$="Killed by a trap."
+      End Select
       EpDone=0
       x=1
       For t=1 To 5
