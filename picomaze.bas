@@ -179,7 +179,7 @@ End DefineFont
 
 Sub ShowHelp
   Box 4,24,312,281,1,RGB(red),RGB(black)
-  Text 128,32,"PicoMaze",,,,RGB(orange)
+  Text 128,32,"PicoMaze",,,,RGB(orange),RGB(black)
   Text 19,48,"You are looking for this: ",,1,,RGB(white)
   Font 10
   Color PrizeColor(PrizeType)
@@ -434,7 +434,7 @@ Sub PlayMusic
                 FreqY=FreqX
           End Select
           If FreqX<>0 Or CurrentNote$="X " Then
-            Play tone freqx,freqy,NoteLength*3
+            Play tone freqx,freqy,5*NoteLength*3
           Else
             If CurrentNote$="- " Then Play tone 0,0,NoteLength*3
           End If
