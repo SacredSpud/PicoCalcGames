@@ -608,25 +608,25 @@ HeartSong$="494|330 X 554|370 X 494|392 X 554|440 X 587|370 X X X X X X X "
 
 NoteLength=20
 PauseLength=20
-PauseIncrement=10
+PauseIncrement=9
 xmax=24
 ymax=40
 bc=RGB(red)
 wc=RGB(orange)
 Dim s(xmax,ymax)
 Randomize Timer
-On error ignore
-Open "picomaze.grv" For input As #1
-Input #1,kmaze
-Input #1,aname$
-Input #1,kline$
-Input #1,kgp
-For t=1 To 5
-  Line Input #1,epline$(t)
-Next t
-Close #1
-On error abort
 Do
+  On error ignore
+  Open "picomaze.grv" For input As #1
+  Input #1,kmaze
+  Input #1,aname$
+  Input #1,kline$
+  Input #1,kgp
+  For t=1 To 5
+    Line Input #1,epline$(t)
+  Next t
+  Close #1
+  On error abort
   GameOver=0
   maze=0
   Color RGB(white),RGB(black)
@@ -1038,7 +1038,7 @@ Do
       If AutoRest=1 Then
         Do
           If gp>4 Then
-            PlayQueue$=HeartSong$
+            PlayQueue$=PlayQueue$+HeartSong$
             gp=gp-5
             hp=hp+1
           End If
@@ -1230,7 +1230,7 @@ Do
           zap=zap-1
         Else
           hp=hp-10
-          If hp<1 Then dead=1
+          If hp<1 Then dead=1:AutoRest=0
           MazeLine
           For t=1 To 15
             If t/2=Int(t/2) Then
