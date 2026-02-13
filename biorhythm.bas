@@ -39,6 +39,40 @@ Sub CalcDay
   If j<low(r) Then low(r)=j:lowday(r)=f
 End Sub
 
+Sub ShowHelp
+  Color RGB(black), RGB(white)
+  CLS
+  Print "          What is a biorhythm?"
+  Print
+  Print "Biorhythmic cycles begin at birth and"
+  Print "are thought to influence our behavioral"
+  Print "patterns. The three cycles are:"
+  Print
+  Print "Physical - 23 days, governing strength,"
+  Print "  endurance, and physical well-being"
+  Print
+  Print "Emotional - 28 days, governing attitude"
+  Print "  cooperativeness, and friendliness."
+  Print
+  Print "Intellectual - 33 days, governing quick-"
+  Print "  thinking, creativity, and awareness."
+  Print
+  Print "Critical days happen when cycles cross"
+  Print "the zero line. These are days of greater"
+  Print "risk and uncertainty."
+  Print
+  Print "Biorhyth theory was has been debunked"
+  Print "by dozens of published studies, but that"
+  Print "didn't stop early bedroom programmers"
+  Print "from automating the process in BASIC."
+  Print
+  Print "       Press any key to continue.";
+  For t=1 To 5: i$=Inkey$: Next
+  Do
+    i$=Inkey$
+  Loop Until i$<>""
+End Sub
+
 Data 31,28,31,30,31,30,31,31,30,31,30,31
 Data January,February,March,April,May
 Data June,July,August,September,October
@@ -51,7 +85,7 @@ Next
 For t=1 To 12
   Read MonthName$(t)
 Next t
-validkey$=Chr$(27)+" "+"b"
+validkey$=Chr$(27)+" "+"b"+Chr$(145)
 For t=128 To 131
   ValidKey$=ValidKey$+Chr$(t)
 Next
@@ -63,43 +97,50 @@ Input #1,c
 Close #1
 On error abort
 
-Color RGB(white),RGB(cobalt)
-CLS
-Text -4,30,"BIORHYTHM",,2,3,RGB(cyan)
-Text 45,90,"C a l c u l a t o r",,2,1
-Text 30,272,"%$#",,10,2,RGB(yellow)
-Text 30,288," !"+Chr$(34),,10,2,RGB(brown)
-Text 78,288,"Sacred Potato Productions",,1,,RGB(white)
-Text 80,304,"Some rights reserved.",,1,,RGB(white)
-amp=23
-cent=160
-freq=.05
-shift=0
-ccol=RGB(red)
-SineWave
-amp=28
-freq=.08
-ccol=RGB(green)
-SineWave
-amp=33
-freq=.03
-ccol=RGB(magenta)
-SineWave
-If a<>0 Then
-  Text 12,220,"Press B to enter your own birthday or"
-  NextLine$="any other key to proceed with "+Str$(b)+"/"+Str$(c)+"/"+Str$(a)
-  Text 160-(4*Len(NextLine$)),232,NextLine$
-Else
-Text 60,214,"Press any key to begin."
-End If
 Do
-  i$=Inkey$
+  Color RGB(white),RGB(cobalt)
+  CLS
+  Text -4,30,"BIORHYTHM",,2,3,RGB(cyan)
+  Text 45,90,"C a l c u l a t o r",,2,1
+  Text 30,272,"%$#",,10,2,RGB(yellow)
+  Text 30,288," !"+Chr$(34),,10,2,RGB(brown)
+  Text 78,288,"Sacred Potato Productions",,1,,RGB(white)
+  Text 80,304,"Some rights reserved.",,1,,RGB(white)
+  amp=23
+  cent=160
+  freq=.05
+  shift=0
+  ccol=RGB(red)
+  SineWave
+  amp=28
+  freq=.08
+  ccol=RGB(green)
+  SineWave
+  amp=33
+  freq=.03
+  ccol=RGB(magenta)
+  SineWave
+  If a<>0 Then
+    Text 12,220,"Press B to enter your own birthday or"
+    NextLine$="any other key to proceed with "+Str$(b)+"/"+Str$(c)+"/"+Str$(a)
+    Text 160-(4*Len(NextLine$)),232,NextLine$
+  Else
+  Text 60,214,"Press any key to begin."
+  End If
+  Text 100,252,"Press F1 for Help"
+  Do
+    i$=Inkey$
+  Loop Until i$<>""
+  If LCase$(i$)="b" Then
+    a=0
+    b=0
+    c=0
+  End If
+  If i$=Chr$(145) Then
+    ShowHelp
+    i$=""
+  End If
 Loop Until i$<>""
-If LCase$(i$)="b" Then
-  a=0
-  b=0
-  c=0
-End If
 Do
   Color 0,RGB(white)
   CLS
@@ -338,6 +379,8 @@ Do
         a=0
         b=0
         c=0
+      Case Chr$(145)
+        ShowHelp
     End Select
   Loop While quit=0 And NewBirthday=0
   NewBirthday=0
