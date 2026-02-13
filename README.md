@@ -12,4 +12,5 @@ These are games that I've written in Picomite BASIC for the ClockworkPi PicoCalc
 
 Not games:
 
++ BioRhythm - Debunked pseudoscience to plan your life around!
 + PicoFile - A simple database.
