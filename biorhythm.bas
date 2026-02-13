@@ -290,12 +290,12 @@ Do
     Box 180,230,10,10,2,RGB(black),RGB(red)
     Text 193,230,"Valley",,1,,RGB(black)
     Box 54,250,10,10,2,RGB(black),RGB(yellow)
-    Text 68,250,"Neutral",,1,,RGB(black)
+    Text 68,250,"Critical",,1,,RGB(black)
     Box 166,250,10,10,2,RGB(black),RGB(green)
     Box 180,250,10,10,2,RGB(black),RGB(red)
     Text 170,252,"*",,8,,RGB(blue),RGB(green)
     Text 184,252,"*",,8,,RGB(white),RGB(red)
-    Text 193,250,"Critical",,1,,RGB(black)
+    Text 193,250,"Intersections",,1,,RGB(black)
     If Month=12 Then
       NextMonth$="January"
       NextYear$=Str$(year+1)
