@@ -1038,7 +1038,7 @@ Do
       If AutoRest=1 Then
         Do
           If gp>4 Then
-            PlayQueue$=PlayQueue$+HeartSong$
+            PlayQueue$=HeartSong$
             gp=gp-5
             hp=hp+1
           End If
