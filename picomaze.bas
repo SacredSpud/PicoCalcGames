@@ -25,7 +25,7 @@ DefineFont #10
   FF81B581 99A5E742 1C040800 91DB8D4A 187C9A99 D47C2800 64447CC4 FFF5A57E
   5A7E3C00 427E7E5A 003C6642 10000000 307E7E30 00000010 08000000 0C7E7E0C
   00000008 18000000 18187E3C 00000018 18000000 3C7E1818 00000018 00000000
-  00000000 00000000 
+  00000000 00000000
 End DefineFont
 
 DefineFont #11
@@ -1038,7 +1038,7 @@ Do
       If AutoRest=1 Then
         Do
           If gp>4 Then
-            PlayQueue$=HeartSong$
+            PlayQueue$=+HeartSong$
             gp=gp-5
             hp=hp+1
           End If
@@ -1348,7 +1348,7 @@ Do
               Pause 50
             Next t
             CatchKeys
-            Dead=5
+            Dead=6
           Case Else ' Monster
             CatchKeys
             If s(px,py)=7 Then
@@ -1578,83 +1578,83 @@ Do
       Color RGB(white),RGB(black)
       Text 0,120,"  GAME OVER   ",,1,3,RGB(RUST),RGB(black)
       Text 0,180,"     Press E to write your epitaph",,1,,RGB(white),RGB(black)
-    Text 0,192,"          or any key to quit.",,,,RGB(white),RGB(black)
-    GameOver=1
-    PlayQueue$="370|277 X X X X X X X X X X X X X X X 349|262 X X X X X X X 262|220 X X X X X X X 277|233 X X X X X X X 262|233 X X X X X X X 233|233 X X X X X X X "
-    catchkeys
-    AnyKey
-    If LCase$(i$)="e" Then
-      Select Case dead
-        Case 1
-          Select Case Int(Rnd*8)+1
-            Case 1
-              kline$="Killed by a freakin' wall."
-            Case 2
-              kline$="Killed by A WALL. I KNOW."
-            Case 3
-              kline$="Killed by a wall like a rube."
-            Case 4,5,6
-              kline$="Killed by an electrified wall."
-            Case Else
-              kline$="Killed by electrocution."
-          End Select
-        Case 4
-          kline$="Killed by "+Article$+MonName$
-        Case 5
-          kline$="Killed by a trap."
-      End Select
-      EpDone=0
-      x=1
-      For t=1 To 5
-        epline$(t)=""
-      Next
-      aname$=pname$
-      TombStone
-      Text 160,162,Chr$(219),,,,RGB(white)
-      Do
-        Text 48,280,"Press Esc when you are done.",,,,RGB(white),RGB(black)
-        Do
-          ox=x
-          i$=Inkey$
-          If Len(epline$(x))<25 And i$>Chr$(31) And i$<Chr$(128) Then
-            epline$(x)=epline$(x)+i$
-          Else
-            If i$=Chr$(131) Or i$=Chr$(8) Then
-              If Len(epline$(x))>0 Then
-                epline$(x)=Left$(epline$(x),Len(epline$(x))-1)
-              End If
-            End If
-            If i$=Chr$(128) And x>1 Then x=x-1
-            If i$=Chr$(13) Or i$=Chr$(129) And x<5 Then x=x+1
-          End If
-          If ox<>x Then
-            Text 160-(((Len(epline$(ox))+2)/2)*8),150+(12*ox)," "+epline$(ox)+" ",,,,RGB(white)
-          End If
-          If i$<>"" Then
-            Text 160-(((Len(epline$(x))+2)/2)*8),150+(12*x)," "+epline$(x)+Chr$(219)+" ",,,,RGB(white)
-         End If
-        Loop Until i$=Chr$(27)
-        Text 48,280,"   E)dit, S)ave, C)ancel?   ",,,,RGB(white)
-        Do
-          AnyKey
-          i$=LCase$(i$)
-        Loop Until Instr("esc"+Chr$(13)+Chr$(27),i$)
-        Select Case i$
-          Case Chr$(13),"s"
-            Open "picomaze.grv" For output As #1
-            Print #1,maze
-            Print #1,aname$
-            Print #1,kline$
-            Print #1,gp
-            For t=1 To 5
-              Print #1,epline$(t)
-            Next t
-            Close #1
-            epdone=1
-          Case Chr$(27),"c"
-            epdone=1
+      Text 0,192,"          or any key to quit.",,,,RGB(white),RGB(black)
+      GameOver=1
+      PlayQueue$="370|277 X X X X X X X X X X X X X X X 349|262 X X X X X X X 262|220 X X X X X X X 277|233 X X X X X X X 262|233 X X X X X X X 233|233 X X X X X X X "
+      catchkeys
+      AnyKey
+      If LCase$(i$)="e" Then
+        Select Case dead
+          Case 1
+            Select Case Int(Rnd*8)+1
+              Case 1
+                kline$="Killed by a freakin' wall."
+              Case 2
+                kline$="Killed by A WALL. I KNOW."
+              Case 3
+                kline$="Killed by a wall like a rube."
+              Case 4,5,6
+                kline$="Killed by an electrified wall."
+              Case Else
+                kline$="Killed by electrocution."
+            End Select
+          Case 4
+            kline$="Killed by "+Article$+MonName$
+          Case 5
+            kline$="Killed by a trap."
         End Select
-      Loop Until EpDone=1
+        EpDone=0
+        x=1
+        For t=1 To 5
+          epline$(t)=""
+        Next
+        aname$=pname$
+        TombStone
+        Text 160,162,Chr$(219),,,,RGB(white)
+        Do
+          Text 48,280,"Press Esc when you are done.",,,,RGB(white),RGB(black)
+          Do
+            ox=x
+            i$=Inkey$
+            If Len(epline$(x))<25 And i$>Chr$(31) And i$<Chr$(128) Then
+              epline$(x)=epline$(x)+i$
+            Else
+              If i$=Chr$(131) Or i$=Chr$(8) Then
+                If Len(epline$(x))>0 Then
+                  epline$(x)=Left$(epline$(x),Len(epline$(x))-1)
+                End If
+              End If
+              If i$=Chr$(128) And x>1 Then x=x-1
+              If i$=Chr$(13) Or i$=Chr$(129) And x<5 Then x=x+1
+            End If
+            If ox<>x Then
+              Text 160-(((Len(epline$(ox))+2)/2)*8),150+(12*ox)," "+epline$(ox)+" ",,,,RGB(white)
+            End If
+            If i$<>"" Then
+              Text 160-(((Len(epline$(x))+2)/2)*8),150+(12*x)," "+epline$(x)+Chr$(219)+" ",,,,RGB(white)
+           End If
+          Loop Until i$=Chr$(27)
+          Text 48,280,"   E)dit, S)ave, C)ancel?   ",,,,RGB(white)
+          Do
+            AnyKey
+            i$=LCase$(i$)
+          Loop Until Instr("esc"+Chr$(13)+Chr$(27),i$)
+          Select Case i$
+            Case Chr$(13),"s"
+              Open "picomaze.grv" For output As #1
+              Print #1,maze
+              Print #1,aname$
+              Print #1,kline$
+              Print #1,gp
+              For t=1 To 5
+                Print #1,epline$(t)
+              Next t
+              Close #1
+              epdone=1
+            Case Chr$(27),"c"
+              epdone=1
+          End Select
+        Loop Until EpDone=1
+      End If
     End If
-  End If
-Loop
+  Loop
