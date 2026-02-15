@@ -13,4 +13,5 @@ These are games that I've written in Picomite BASIC for the ClockworkPi PicoCalc
 Not games:
 
 + BioRhythm - Debunked pseudoscience to plan your life around!
++ Oblique - Brian Eno's Oblique Strategies.
 + PicoFile - A simple database.
