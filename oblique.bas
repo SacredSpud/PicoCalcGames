@@ -1,4 +1,4 @@
-' The Oblique Strategies are the property of 
+' The Oblique Strategies are the property of
 ' Brian Eno and Peter Schmidt, and are used
 ' here with gratitude and admiration, but
 ' not permission.
@@ -209,30 +209,33 @@ lline$=String$(20,47)
 rline$=String$(20,92)
 Color 0,RGB(white)
 CLS
+Text 30,278,"%$#",,8,2,RGB(gold)
+Text 30,294," !"+Chr$(34),,8,2,RGB(brown)
+Text 78,294,"Sacred Potato Productions",,1,,RGB(black)
 Text 120,5,"Brian Eno's",,1,,RGB(black)
 For t=319 To 24 Step -10
   Text t,20,"Oblique ",,5,,RGB(orange)
   Text 60-t,65," Strategies",,5,,RGB(rust)
   Pause 2
 Next
-Text 30,288,"%$#",,8,2,RGB(yellow)
-Text 30,304," !"+Chr$(34),,8,2,RGB(brown)
-Text 78,304,"Sacred Potato Productions",,1,,RGB(black)
 Color RGB(black)
+Font 7
+Text 24,240,"Press any key for more advice, or Esc to quit.",,7,1
+Font 1
+Text 0,118,""
+Color RGB(magenta),RGB(blue)
+Print lline$;rline$;
+
 Do
   For t=1 To Int(Rnd*184)+1
     Read a$
   Next
   a$=a$+" "
-  Box 0,118,320,96,0,RGB(white),RGB(white)
-  Text 0,118,""
+  Box 0,142,320,96,0,RGB(white),RGB(white)
+  Text 0,142,""
   b$=" "
   h=1
-  Color RGB(magenta),RGB(blue)
-  Print lline$;rline$;
   Color RGB(black),RGB(white)
-  Print
-  Print
   For t=1 To Len(a$)
     b$=b$+Mid$(a$,t,1)
     If Mid$(a$,t,1)=" " Then
@@ -252,11 +255,6 @@ Do
   Color RGB(magenta),RGB(blue)
   Print rline$;lline$;
   Color RGB(black),RGB(white)
-  Print
-  Print
-  Font 7
-  Print " Press any key for more advice, or Esc to quit."
-  Font 1
   Do
     i$=Inkey$
   Loop Until i$<>""
