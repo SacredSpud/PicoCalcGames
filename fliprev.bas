@@ -202,65 +202,68 @@ Do
     Do
       i$=Inkey$
       b=Instr(sequence$,i$)
-      If LCase$(i$)="e" Then easymode
-    Loop Until b>0 Or i$=Chr$(27)
-    If i$=Chr$(27) Then CLS :End
-    If easy=1 Or (moves Mod 2)=0 Then
-      If b>1 Then upto$=Left$(sequence$,b-1) Else upto$=""
-      work$=Mid$(sequence$,b,11-b)
-      f=1
-      l=10
-    Else
-      If b<10 Then upto$=Right$(sequence$,10-b) Else upto$=""
-      work$=Left$(sequence$,b)
-      f=10
-      l=1
-    End If
-    rev$=""
-    For t=Len(work$) To 1 Step -1
-      rev$=rev$+Mid$(work$,t,1)
-    Next
-    If dir=-1 Then
-      newseq$=upto$+rev$
-    Else
-      newseq$=rev$+upto$
-    EndIf
-    lastflip$=""
-    For t=f To l Step -dir
-      If dir=-1 Then
-        If t+1>b Then goodtogo=1 Else goodtogo=0
+    Loop Until b>0 Or i$=Chr$(27) or lcase$(i$)="e"
+    if lcase$(i$)="e" then
+      easymode
+    else
+      If i$=Chr$(27) Then CLS :End
+      If easy=1 Or (moves Mod 2)=0 Then
+        If b>1 Then upto$=Left$(sequence$,b-1) Else upto$=""
+        work$=Mid$(sequence$,b,11-b)
+        f=1
+        l=10
       Else
-        If t-1<b Then goodtogo=1 Else goodtogo=0
+        If b<10 Then upto$=Right$(sequence$,10-b) Else upto$=""
+        work$=Left$(sequence$,b)
+        f=10
+        l=1
       End If
-      If goodtogo=1 Then
-        Play tone t*150,t*190,50
-        currentflip$=flipseq$(Val(Mid$(sequence$,t,1)))
-        For j=1 To 3
-          If lastflip$<>"" Then
-            Text 18+((t+dir)*24),100,Mid$(lastflip$,j,1),,8,2,cc(t+dir)
-          End If
-          lettr$=Mid$(flipseq$(Val(Mid$(newseq$,t,1))),j,1)
-          nextflip$=lettr$+nextflip$
-          Text 18+(t*24),100,Mid$(currentflip$,j,1),,8,2,cc(t)
+      rev$=""
+      For t=Len(work$) To 1 Step -1
+        rev$=rev$+Mid$(work$,t,1)
+      Next
+      If dir=-1 Then
+        newseq$=upto$+rev$
+      Else
+        newseq$=rev$+upto$
+      EndIf
+      lastflip$=""
+      For t=f To l Step -dir
+        If dir=-1 Then
+          If t+1>b Then goodtogo=1 Else goodtogo=0
+        Else
+          If t-1<b Then goodtogo=1 Else goodtogo=0
+        End If
+        If goodtogo=1 Then
+          Play tone t*150,t*190,50
+          currentflip$=flipseq$(Val(Mid$(sequence$,t,1)))
+          For j=1 To 3
+            If lastflip$<>"" Then
+              Text 18+((t+dir)*24),100,Mid$(lastflip$,j,1),,8,2,cc(t+dir)
+            End If
+            lettr$=Mid$(flipseq$(Val(Mid$(newseq$,t,1))),j,1)
+            nextflip$=lettr$+nextflip$
+            Text 18+(t*24),100,Mid$(currentflip$,j,1),,8,2,cc(t)
+            Pause pdir
+          Next
+          Text 18+(t*24),100,"*",,8,2,cc(t)
           Pause pdir
-        Next
-        Text 18+(t*24),100,"*",,8,2,cc(t)
-        Pause pdir
-        Text 18+(t*24),100,"%",,8,2,cc(t)
-        Pause pdir
-        Text 18+(t*24),100,"*",,8,2,cc(t)
-        Pause pdir
-        lastflip$=nextflip$
-        nextflip$=""
-      End If
-    Next
-    Play tone t*150,t*190,50
-    Moves=Moves+1
-    sequence$=newseq$
-    score$=" Moves: "+Str$(moves)+" "
-    slen=Len(score$)*4
-    Text 160-slen,280,score$,,1,,RGB(yellow)
-  Loop Until sequence$="0123456789" Or i$=Chr$(27)
+          Text 18+(t*24),100,"%",,8,2,cc(t)
+          Pause pdir
+          Text 18+(t*24),100,"*",,8,2,cc(t)
+          Pause pdir
+          lastflip$=nextflip$
+          nextflip$=""
+        End If
+      Next
+      Play tone t*150,t*190,50
+      Moves=Moves+1
+      sequence$=newseq$
+      score$=" Moves: "+Str$(moves)+" "
+      slen=Len(score$)*4
+      Text 160-slen,280,score$,,1,,RGB(yellow)
+    end if
+  Loop Until sequence$="0123456789"
 
   Text 144,150,"*",,12,1
   DrawNumbers
