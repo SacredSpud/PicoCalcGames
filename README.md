@@ -2,6 +2,7 @@
 
 These are games that I've written in Picomite BASIC for the ClockworkPi PicoCalc.
 
++ Flip/Reverse - An incredibly frustrating tile flip game.
 + Landmine - Drive your tank to rescue civilians on a battlefield riddled with mines.
 + Life - John Conway's classic The Game of Life.
 + PicoMaze - Obtain the Arbitrary Whatsit of Completion in this simple dungeon crawl with plenty of monsters.
