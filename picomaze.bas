@@ -432,6 +432,7 @@ Sub PlayMusic
                 freqy=Val(Mid$(Currentnote$,Instr(CurrentNote$,"|")+1,Len(CurrentNote$)))
               Else
                 FreqY=FreqX
+              end if
           End Select
           If FreqX<>0 Or CurrentNote$="X " Then
             Play tone freqx,freqy,5*NoteLength*3
@@ -443,7 +444,6 @@ Sub PlayMusic
     End If
   Loop Until CurrentPause>=PauseLength
   CurrentPause=0
-  End If
   If zapon=1 And PlayQueue$="" Then playqueue$=ZapMusic$
 End Sub
 
