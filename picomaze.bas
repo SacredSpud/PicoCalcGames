@@ -413,7 +413,7 @@ Sub PlayMusic
     CurrentPause=CurrentPause+PauseIncrement
     If CurrentPause>=NoteLength Then
       If CurrentNote$<>"" And CurrentLength<NoteLength Then
-        If freqx<>0 Then Play Tone FreqX,FreqY,NoteLength*2
+        If freqx<>0 Then Play Tone FreqX,FreqY,200
         CurrentLength=CurrentLength+PauseLength
       Else
         CurrentNote$=""
@@ -432,18 +432,18 @@ Sub PlayMusic
                 freqy=Val(Mid$(Currentnote$,Instr(CurrentNote$,"|")+1,Len(CurrentNote$)))
               Else
                 FreqY=FreqX
-              end if
           End Select
           If FreqX<>0 Or CurrentNote$="X " Then
-            Play tone freqx,freqy,5*NoteLength*3
+            Play tone freqx,freqy,200
           Else
-            If CurrentNote$="- " Then Play tone 0,0,NoteLength*3
+            If CurrentNote$="- " Then Play tone 0,0,200
           End If
         End If
       End If
     End If
   Loop Until CurrentPause>=PauseLength
   CurrentPause=0
+  End If
   If zapon=1 And PlayQueue$="" Then playqueue$=ZapMusic$
 End Sub
 
@@ -606,9 +606,9 @@ Music$(16)="659|330 X X X 330|165 X 699|330 X 587|294 X X X X X X X X 659|330 X 
 MusicCount=16
 HeartSong$="494|330 X 554|370 X 494|392 X 554|440 X 587|370 X X X X X X X "
 
-NoteLength=20
-PauseLength=20
-PauseIncrement=9
+NoteLength=30
+PauseLength=30
+PauseIncrement=30
 xmax=24
 ymax=40
 bc=RGB(red)
