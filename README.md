@@ -19,4 +19,4 @@ Not games:
 + PicoFile - A simple database.
 
 
-All of these programs are designed to work with the basic RP2040 microcontroller.  Without modification they may run too fast on the RP2350.
+All of these programs are designed to work with the basic RP2040 microcontroller.  Without modification the games may run too fast on the RP2350.
