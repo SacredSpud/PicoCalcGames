@@ -3,6 +3,7 @@
 These are games that I've written in Picomite BASIC for the ClockworkPi PicoCalc.
 
 + Flip/Reverse - An incredibly frustrating tile flip game.
++ Greed - An implementation of the classic terminal game, Greed.
 + Landmine - Drive your tank to rescue civilians on a battlefield riddled with mines.
 + Life - John Conway's classic The Game of Life.
 + PicoMaze - Obtain the Arbitrary Whatsit of Completion in this simple dungeon crawl with plenty of monsters.
@@ -16,3 +17,6 @@ Not games:
 + BioRhythm - Debunked pseudoscience to plan your life around!
 + Oblique - Brian Eno's Oblique Strategies.
 + PicoFile - A simple database.
+
+
+All of these programs are designed to work with the basic RP2040 microcontroller.  Without modification they may run too fast on the RP2350.
