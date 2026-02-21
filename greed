@@ -455,10 +455,10 @@ Loop Until gameover=1
   Box 90,190,140,54,,RGB(black),RGB(black)
   Text 160-(4*Len(scoreline$)),200,scoreline$,,,,RGB(white)
   Text 160-(4*Len(nextline$)),220,nextline$,,,,RGB(white)
-  Box 0,309,319,10,,RGB(black),RGB(black)
+  Box 0,311,319,8,,RGB(black),RGB(black)
   st=0
   PlayQueue$=""
-  For t=1 To 100
+  For t=1 To 200
     i$=Inkey$
   Next
   Do
