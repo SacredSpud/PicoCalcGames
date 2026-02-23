@@ -439,7 +439,7 @@ Do
       Text (x-1)*8,(y-1)*12," "
       x=x+(p*newx)
       y=y+(p*newy)
-      comp$=Mid$(Str$((compl/1000)*100),1,4)
+      comp$=Mid$(Str$((compl/1040)*100),1,4)
       Text 0,311,"Score: "+Str$(score)+"       "+comp$+"% complete",,7,,RGB(white)
     End If
   Else
