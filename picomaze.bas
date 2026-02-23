@@ -178,6 +178,7 @@ End DefineFont
 
 
 Sub ShowHelp
+  Color RGB(white),RGB(black)
   Box 4,24,312,281,1,RGB(red),RGB(black)
   Text 128,32,"PicoMaze",,,,RGB(orange),RGB(black)
   Text 19,48,"You are looking for this: ",,1,,RGB(white)
@@ -196,6 +197,16 @@ Sub ShowHelp
   Print " "+MazeType$+"."
   Text 19,84,"6897",,10,,RGB(white),RGB(black)
   Text 72,84,"To move",,1,,RGB(white)
+  Text 144,84,Chr$(35),,10,1,RGB(magenta)
+  Color RGB(white)
+  Font 1
+  Print "/";
+  Font 10
+  Color RGB(magenta)
+  Print Chr$(36);
+  Font 1
+  Color RGB(white)
+  Print " are warp portals"
   Text 8,108,"[Space] Use ",,,,RGB(white)
   Color RGB(cyan)
   Font 10
@@ -803,7 +814,7 @@ Do
   CatchKeys
   AnyKey
   If LCase$(i$)="n" Then
-    Box 0,160,320,72,,RGB(black),RGB(black)
+    Box 0,160,320,112,,RGB(black),RGB(black)
     Text 154,160,Chr$(219)
     OName$=Pname$
     nname$=""
@@ -1350,6 +1361,7 @@ Do
             CatchKeys
             Dead=6
           Case Else ' Monster
+            If px<>oldx Or py<>oldy Then
             CatchKeys
             If s(px,py)=7 Then
               If Maze<25 Then
@@ -1545,6 +1557,7 @@ Do
               CLS
               drawmap
               mazeline
+              End If
             End Select
           End If
         End If
