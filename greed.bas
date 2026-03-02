@@ -254,6 +254,7 @@ For xx=1 To 26
   Next
 Next
 gameover=0
+compl=0
 score=0
 Hilite=-1
 DoHilite=0
