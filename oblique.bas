@@ -216,7 +216,7 @@ Text 120,5,"Brian Eno's",,1,,RGB(black)
 For t=319 To 24 Step -10
   Text t,20,"Oblique ",,5,,RGB(orange)
   Text 60-t,65," Strategies",,5,,RGB(rust)
-  Pause 2
+  Pause 20
 Next
 Color RGB(black)
 Font 7
@@ -260,5 +260,16 @@ Do
   Loop Until i$<>""
   Restore
 Loop Until i$=Chr$(27)
+For t=24 To 319 Step 10
+  Text t,20," Oblique",,5,,RGB(orange)
+  Text 60-t,65,"Strategies ",,5,,RGB(rust)
+  Pause 20
+Next
+
+Text 0,319,""
 Color RGB(green),RGB(black)
+For t=1 To 27
+  Print
+  Pause 20
+Next
 CLS
