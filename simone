@@ -1,0 +1,306 @@
+' Simone (C) 2026 by Sacred Potato
+' Productions is licensed under
+' CC BY-NC-SA 4.0. To view a copy of
+' this license, visit
+' https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+DefineFont #9
+  03200808 00000000 00000000 F0E0C080
+  FFFEFCF8 0F070301 FF7F3F1F FFFFFFFF
+  FFFFFFFF
+End DefineFont
+
+DefineFont #10
+  5F200808
+  0403000001060404
+  06F90000FF000000
+  20C00000C0202020
+  0000000000008000
+  0000000000FF00FF
+  0000000000000100
+End DefineFont
+
+DefineFont 12
+  04200C08 08000000 0C7E7E0C 00000008 10000000 307E7E30 00000010 18000000
+  18187E3C 00000018 18000000 3C7E1818 00000018
+End DefineFont
+
+Sub DrawBoard
+  Text 0,0,""
+  spr=38
+  sl=0
+  Font 9
+  For t=1 To 20
+    Color RGB(green),RGB(green)
+    If sl>0 Then Print String$(sl,32);
+    Color RGB(green),RGB(red)
+    Print Chr$(33);String$(spr,32);
+    Color RGB(blue),RGB(red)
+    Print Chr$(34);
+    Color RGB(blue),RGB(blue)
+    If sl>0 Then Print String$(sl,32);
+    sl=sl+1
+    spr=spr-2
+  Next
+  spr=0
+  sl=19
+  For t=1 To 20
+    Color RGB(green),RGB(green)
+    If sl>0 Then Print String$(sl,32);
+    Color RGB(yellow),RGB(green)
+    Print Chr$(34);
+    Color RGB(yellow),RGB(yellow)
+    If spr>0 Then Print String$(spr,32);
+    Color RGB(yellow),RGB(blue)
+    Print Chr$(33);
+    Color RGB(blue),RGB(blue)
+    If sl>0 Then Print String$(sl,32);
+    sl=sl-1
+    spr=spr+2
+  Next
+End Sub
+
+Sub FlashRed
+  Font 9
+  For t=1 To 20
+    Text (t-1)*8,(t-1)*8,""
+    Color RGB(green),RGB(pink)
+    Print Chr$(33);String$(40-(t*2),32);
+    Color RGB(blue),RGB(pink)
+    Print Chr$(34);
+  Next t
+End Sub
+
+Sub FlashYellow
+  Font 9
+  For t=20 To 1 Step -1
+    Text (t-1)*8,312-((t-1)*8),""
+    Color RGB(orange),RGB(green)
+    Print Chr$(34);
+    Color RGB(green),RGB(orange)
+    Print String$(40-(t*2),32 );
+    Color RGB(orange),RGB(blue)
+    Print Chr$(33);
+  Next t
+End Sub
+
+Sub FlashGreen
+  For t=1 To 20
+    Text 0,(t-1)*8,""
+    Color RGB(magenta),RGB(magenta)
+    If t>0 Then Print String$(t-1,32);
+    Color RGB(magenta),RGB(red)
+    Print Chr$(33);
+  Next t
+  For t=1 To 20
+    Text 0,(40-t)*8,""
+    Color RGB(magenta),RGB(magenta)
+    If t>0 Then Print String$(t-1,32);
+    Color RGB(yellow),RGB(magenta)
+    Print Chr$(34);
+  Next t
+End Sub
+
+Sub FlashBlue
+  For t=1 To 20
+    Text 319-(8*t),(t-1)*8,""
+    Color RGB(cyan),RGB(red)
+    Print Chr$(34);
+    Color RGB(cyan),RGB(cyan)
+    If t>0 Then Print String$(t-1,32);
+  Next t
+  For t=1 To 20
+    Text 319-(8*t),(40-t)*8,""
+    Color RGB(yellow),RGB(cyan)
+    Print Chr$(33);
+    Color RGB(cyan),RGB(cyan)
+    If t>0 Then Print String$(t-1,32);
+  Next t
+End Sub
+
+Sub FlashBoard
+      Select Case d$
+        Case "1"
+          FlashRed
+          Play tone 523,523,nl
+        Case "2"
+          FlashBlue
+          Play tone 330,330,nl
+        Case "3"
+          FlashYellow
+          Play tone  392,392,nl
+        Case "4"
+          FlashGreen
+          Play tone 494,494,nl
+      End Select
+End Sub
+
+Randomize Timer
+Dim key$(4),Melody$(6)
+key$(1)=Chr$(128)+"WwJj"
+key$(2)=Chr$(131)+"DdLl"
+key$(3)=Chr$(129)+"XxKk"
+key$(4)=Chr$(130)+"AaHh"
+Melody$(1)="349 440 466 440 523 262 349 "
+Melody$(2)="523 466 440 523 699 "
+Melody$(3)="349 392 440 392 349 440 392 "
+Melody$(4)="349 392 349 330 349 523 349 "
+Melody$(5)="349 330 349 330 349 392 440 330 349 "
+Melody$(6)="523 587 523 466 440 349 392 523 349 "
+
+CLS
+Text 55,30,"Simon",,5,2,RGB(white)
+Pause 800
+For t=55 To 25 Step -2
+  If Inkey$<>"" Then nopause=1
+  Text t,30,"Simon",,5,2,RGB(white)
+  If nopause=0 Then Pause 5
+Next
+stp=2
+For t=1 To 5
+  If Inkey$<>"" Then nopause=1
+  Text 260,0+stp,"e",,4,4,RGB(blue)
+  stp=stp*2
+  If nopause=0 Then Pause 100
+Next
+Pause 60
+Text 260,31,"e",,4,4,RGB(blue)
+Pause 30
+Text 260,28,"e",,4,4,RGB(blue)
+For t=1 To 20:i$=Inkey$:Next
+Color RGB(white),RGB(black)
+Text 0,136,""
+Print "        Repeat the pattern using"
+Print
+Print "Arrow keys      Alpha Keys      Vim Keys"
+Print
+Font 12:Print "AAA";
+Color RGB(white),RGB(red)
+Print Chr$(34);:Font 1
+Color 0,0:Print "                 ";
+Color RGB(white),RGB(red)
+Print "W";:Color 0,0
+Print "             ";
+Color RGB(white),RGB(red):Print "J"
+Color 0,0:Font 12:Print "AA";
+Color RGB(gray),RGB(green)
+Print "!";:Color 0,0
+Print "A";:Color RGB(white),RGB(blue)
+Print " ";:Font 1:Color 0,0
+Print "               ";
+Color RGB(gray),RGB(green):Print "A";:Color 0,0
+Print " ";:Color RGB(white),RGB(blue)
+Print "D";:Color 0,0:Print "           ";
+Color RGB(gray),RGB(green):Print "H";
+Color 0,0:Print " ";:Color RGB(white),RGB(blue)
+Print "L":Color 0,0
+Font 12:Print "AAA";:Color RGB(gray),RGB(yellow)
+Print "#";:Font 1:Color 0,0
+Print "                 ";
+Color RGB(grey),RGB(yellow):Print "X";
+Color 0,0:Print "             ";
+Color RGB(gray),RGB(yellow):Print "K"
+Color RGB(white),RGB(black)
+Print
+Print
+Print "        Press any key to begin."
+Text 30,272,"%$#",,10,2,RGB(yellow)
+Text 30,288," !"+Chr$(34),,10,2,RGB(brown)
+Text 78,288,"Sacred Potato Productions",,1,,RGB(white)
+Text 80,304,"Some rights reserved.",,1,,RGB(white)
+
+Do
+  i$=Inkey$
+Loop Until i$<>""
+
+Do
+  CLS
+  DrawBoard
+  PlayQueue$=Melody$(Int(Rnd*6)+1)
+  fc=0
+  Do
+    nextspc=Instr(PlayQueue$," ")
+    note=Val(Left$(PlayQueue$,nextspc-1))
+    PlayQueue$=Mid$(PlayQueue$,NextSpc+1,Len(PlayQueue$))
+    fc=fc+1
+    If fc=5 Then fc=1
+    d$=Str$(fc)
+    Play Tone Note,Note,200
+'    FlashBoard
+    Pause 100
+'    DrawBoard
+  Loop Until PlayQueue$=""
+  For t=1 To 20:i$=Inkey$:Next
+  DrawBoard
+  nl=100
+  tl=10*Int(Rnd*50)
+  Do
+    Pause 10
+    tl=tl-1
+    i$=Inkey$
+  Loop Until tl=0 Or i$<>""
+  If I$<>"" Then gameover=1
+  Do
+    If gameover=0 Then
+      b$=b$+Mid$("1234",Int(Rnd*4)+1,1)
+      For q=1 To Len(b$)
+        If gameover=0 Then
+          Pause 200
+          i$=Inkey$
+          If i$<>"" Then gameover=1
+          If gameover=0 Then
+            d$=Mid$(b$,q,1)
+            FlashBoard
+            DrawBoard
+          End If
+        End If
+      Next
+      For q=1 To Len(b$)
+        tl=150
+        If gameover=0 Then
+          Do
+            i$=Inkey$
+            Pause 10
+            tl=tl-1
+          Loop Until tl=0 Or i$<>""
+          d$=Mid$(b$,q,1)
+          If i$<>"" And Instr(key$(Val(d$)),i$)=0 Then
+            gameover=3
+          Else
+            If tl=0 Then
+              gameover=2
+            Else
+              FlashBoard
+              Pause 200
+              drawboard
+            End If
+          End If
+        End If
+      Next
+      Pause 500
+    End If
+    score=score+1
+  Loop Until gameover>0
+  score=score-1
+  If i$=Chr$(27) Then
+    Message$=""
+  Else
+    Select Case gameover
+      Case 1
+        Message$="You were too early."
+      Case 2
+        Message$="You were too late."
+      Case 3
+        Message$="You hit the wrong key."
+    End Select
+  End If
+  Text 0,30,"  GAME OVER   ",,2,2,RGB(white),RGB(black)
+  Text 160-(Len(Message$)*6),90,Message$,,2,1,RGB(white),RGB(black)
+  Text 160-(6*(12+Len(Str$(score)))),180,"Your score: "+Str$(Score),,2,1,RGB(white),RGB(black)
+  Text 0, 260,"Press a key to play again or Esc to quit",,1,,RGB(white),RGB(black)
+  Do
+    i$=Inkey$
+  Loop Until i$<>""
+Loop Until i$=Chr$(27)
+Color RGB(green),RGB(black)
+CLS
