@@ -214,6 +214,8 @@ Do
 Loop Until i$<>""
 
 Do
+  score=0
+  b$=""
   CLS
   DrawBoard
   PlayQueue$=Melody$(Int(Rnd*6)+1)
