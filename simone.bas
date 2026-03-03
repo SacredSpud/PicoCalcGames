@@ -215,6 +215,7 @@ Loop Until i$<>""
 
 Do
   score=0
+  gameover=0
   b$=""
   CLS
   DrawBoard
@@ -228,9 +229,7 @@ Do
     If fc=5 Then fc=1
     d$=Str$(fc)
     Play Tone Note,Note,200
-'    FlashBoard
     Pause 100
-'    DrawBoard
   Loop Until PlayQueue$=""
   For t=1 To 20:i$=Inkey$:Next
   DrawBoard
@@ -300,6 +299,7 @@ Do
   Text 160-(Len(Message$)*6),90,Message$,,2,1,RGB(white),RGB(black)
   Text 160-(6*(12+Len(Str$(score)))),180,"Your score: "+Str$(Score),,2,1,RGB(white),RGB(black)
   Text 0, 260,"Press a key to play again or Esc to quit",,1,,RGB(white),RGB(black)
+  For t=1 To 20:i$=Inkey$:Next
   Do
     i$=Inkey$
   Loop Until i$<>""
