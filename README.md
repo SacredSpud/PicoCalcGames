@@ -6,6 +6,7 @@ These are games that I've written in Picomite BASIC for the ClockworkPi PicoCalc
 + Greed - An implementation of the classic terminal game, Greed.
 + Landmine - Drive your tank to rescue civilians on a battlefield riddled with mines.
 + Life - John Conway's classic The Game of Life.
++ Invaders - Rank and file Invaders from Space.  You know what this is.  You get it.
 + PicoMaze - Obtain the Arbitrary Whatsit of Completion in this simple dungeon crawl with plenty of monsters.
 + Rebound - Is it pinball? Is it Pong? This is my attempt to redeem the barely-interactive TI-99/4A game Zero Zap.
 + RoboWorld 2048 - Flee numbered robots that combine when they collide.  Sort of like That One Game meets That Other Game.
@@ -21,4 +22,4 @@ Not games:
 + PicoFile - A simple database.
 
 
-All of these programs are designed to work with the basic RP2040 microcontroller.  Without modification the games may run too fast on the RP2350.
+All of these programs are designed to work on an unmodified PicoCalc with a RP2040 microcontroller.  Without modification the games may run too fast on the RP2350.
