@@ -202,10 +202,10 @@ Do
     Do
       i$=Inkey$
       b=Instr(sequence$,i$)
-    Loop Until b>0 Or i$=Chr$(27) or lcase$(i$)="e"
-    if lcase$(i$)="e" then
+    Loop Until b>0 Or i$=Chr$(27) Or LCase$(i$)="e"
+    If LCase$(i$)="e" Then
       easymode
-    else
+    Else
       If i$=Chr$(27) Then CLS :End
       If easy=1 Or (moves Mod 2)=0 Then
         If b>1 Then upto$=Left$(sequence$,b-1) Else upto$=""
@@ -262,7 +262,7 @@ Do
       score$=" Moves: "+Str$(moves)+" "
       slen=Len(score$)*4
       Text 160-slen,280,score$,,1,,RGB(yellow)
-    end if
+    End If
   Loop Until sequence$="0123456789"
 
   Text 144,150,"*",,12,1

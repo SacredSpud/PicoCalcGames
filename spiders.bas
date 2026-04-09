@@ -9,7 +9,7 @@ DefineFont #8
   FFFFFFFF 800FF880 00000000 8FFFF00F FFEFFFFE 011FF0FF 0FF81FF0 FF0FF880
   7FFFF7FF F00FFFF1 00000000 011FF001 FFFFFFFF F8EFFFFE 000000FF F0010000
   1FF0011F 011FF001 F0011FF0 1FF0011F F8800FF8 0FF8800F 800FF880 F8800FF8
-  0000800F FF0F0000 FFFFFFFF F0FFFFFF 00000000 
+  0000800F FF0F0000 FFFFFFFF F0FFFFFF 00000000
 End DefineFont
 
 DefineFont #9
@@ -298,10 +298,10 @@ Do
     Pause 10
     Text boxstart-8,108,"!",,8,,RGB(rust)
     Text boxstart,120,"Y",,1,,RGB(white)
-    if score=1 then
+    If score=1 Then
       Line boxstart+160,122,boxstart+168,132,2,RGB(red)
       Line boxstart+168,122,boxstart+160,132,2,RGB(red)
-    end if
+    End If
   End If
   If i$<>Chr$(27) Then
     For t=1 To 100:i$=Inkey$:Next

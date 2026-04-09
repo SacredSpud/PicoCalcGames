@@ -215,8 +215,8 @@ Loop Until i$<>""
 
 Do
   score=0
-  gameover=0
   b$=""
+  gameover=0
   CLS
   DrawBoard
   PlayQueue$=Melody$(Int(Rnd*6)+1)
@@ -231,8 +231,8 @@ Do
     Play Tone Note,Note,200
     Pause 100
   Loop Until PlayQueue$=""
-  For t=1 To 20:i$=Inkey$:Next
   DrawBoard
+  For t=1 To 30:i$=Inkey$:Next
   nl=100
   tl=10*Int(Rnd*50)
   Do

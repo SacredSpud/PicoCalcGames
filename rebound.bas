@@ -106,7 +106,7 @@ beige=RGB(beige)
 lightgray=RGB(lightgray)
 gray=RGB(gray)
 
-BallStart=1
+ArrowStart=1
 NoteLength=50
 PauseLength=50
 PauseIncrement=10
@@ -290,7 +290,7 @@ Sub DrawInfoArea
   ClearInfoBlock
   ScoreLine
   Text 0,308,DeathSpiral$,,9,,white,black
-  If BallInPlay=0 Then
+  If ArrowInPlay=0 Then
     Text 31,306,"=move    Tab=Paddle     Space=launch",,1,,white,black
   Else
     Text 31,306,"=move   Space="+SpaceAction$+"   Esc=quit",,1,,white
@@ -565,35 +565,35 @@ Sub ProcessInput
   Loop Until Len(p$)<3
 End Sub
 
-Sub ChooseBall
-  BallXdir=0
-  BallYdir=0
+Sub ChooseArrow
+  ArrowXdir=0
+  ArrowYdir=0
   If StickyPaddle=0 Then
-    BallStart=BallStart+1
+    ArrowStart=ArrowStart+1
   Else
     StickyPaddle=0
   End If
-  If BallStart=5 Then BallStart=1
-  Select Case BallStart
+  If ArrowStart=5 Then ArrowStart=1
+  Select Case ArrowStart
     Case 1 'Top paddle
-      BallX=XPaddle+2
-      BallY=1
-      BallYdir=1
+      ArrowX=XPaddle+2
+      ArrowY=1
+      ArrowYdir=1
       arrow=48
     Case 2 'Left paddle
-      BallX=1
-      BallY=YPaddle+2
-      BallXdir=1
+      ArrowX=1
+      ArrowY=YPaddle+2
+      ArrowXdir=1
       arrow=45
     Case 3 'Bottom paddle
-      BallX=XPaddle+2
-      BallY=32
-      BallYdir=-1
+      ArrowX=XPaddle+2
+      ArrowY=32
+      ArrowYdir=-1
       arrow=47
     Case 4 'Right paddle
-      BallX=36
-      BallY=YPaddle+2
-      BallXdir=-1
+      ArrowX=36
+      ArrowY=YPaddle+2
+      ArrowXdir=-1
       arrow=46
   End Select
   If Rnd>.5 Then
@@ -613,9 +613,9 @@ Sub ChooseBall
     Text 296,(i+1)*8," ",,,,,black
   Next i
   Text 16,264,String$(36,32),,,,,black
-  OldBallX=BallX
-  OldBallY=BallY
-  Text (BallX+1)*8,(BallY+1)*8,Chr$(arrow),,9,,green
+  OldArrowX=ArrowX
+  OldArrowY=ArrowY
+  Text (ArrowX+1)*8,(ArrowY+1)*8,Chr$(arrow),,9,,green
   SpaceAction$="Launch"
   DrawInfoArea
   PlayQueue$=NewArrow$
@@ -626,51 +626,51 @@ Sub ChooseBall
   Loop Until PlayQueue$="" Or k$<>""
   PlayQueue$=""
   Pause 100
-  Text (BallX+1)*8,(BallY+1)*8," ",,9,,green
+  Text (ArrowX+1)*8,(ArrowY+1)*8," ",,9,,green
   Pause 100
-  Text (BallX+1)*8,(BallY+1)*8,Chr$(arrow),,9,,green
+  Text (ArrowX+1)*8,(ArrowY+1)*8,Chr$(arrow),,9,,green
   Play tone freq1,freqa,200
   Pause 100
-  Text (BallX+1)*8,(BallY+1)*8," ",,9,,green
+  Text (ArrowX+1)*8,(ArrowY+1)*8," ",,9,,green
   Play tone freq1,freqa,200
   Pause 100
-  Text (BallX+1)*8,(BallY+1)*8,Chr$(arrow),,9,,green
+  Text (ArrowX+1)*8,(ArrowY+1)*8,Chr$(arrow),,9,,green
   Play tone freq2,freqb,200
   Pause 100
-  Text (BallX+1)*8,(BallY+1)*8," ",,9,,green
+  Text (ArrowX+1)*8,(ArrowY+1)*8," ",,9,,green
   Play tone freq2,freqb,200
   Pause 100
-  Text (BallX+1)*8,(BallY+1)*8,Chr$(arrow),,9,,green
+  Text (ArrowX+1)*8,(ArrowY+1)*8,Chr$(arrow),,9,,green
   Pause 100
-  Text (BallX+1)*8,(BallY+1)*8," ",,9,,red
+  Text (ArrowX+1)*8,(ArrowY+1)*8," ",,9,,red
   Pause 100
-  Text (BallX+1)*8,(BallY+1)*8,Chr$(arrow),,9,,green
+  Text (ArrowX+1)*8,(ArrowY+1)*8,Chr$(arrow),,9,,green
 End Sub
 
 Sub HitAWall
   Ricochet
-  BallX=OldBallX
-  BallY=OldBallY
-  BallXDir=-BallXDir
-  BallYDir=-BallYDir
-  ReverseBall
+  ArrowX=OldArrowX
+  ArrowY=OldArrowY
+  ArrowXDir=-ArrowXDir
+  ArrowYDir=-ArrowYDir
+  ReverseArrow
 End Sub
 
 Sub StickyWall
-  BallInPlay=0
-  If BallXDir=-1 Then BallStart=2
-  If BallXDir=1 Then BallStart=4
-  If BallYDir=-1 Then BallStart=1
-  If BallYDir=1 Then BallStart=3
+  ArrowInPlay=0
+  If ArrowXDir=-1 Then ArrowStart=2
+  If ArrowXDir=1 Then ArrowStart=4
+  If ArrowYDir=-1 Then ArrowStart=1
+  If ArrowYDir=1 Then ArrowStart=3
   Stickypaddle=1
-  ChooseBall
+  ChooseArrow
 End Sub
 
-Sub ReverseBall
-  If BallXDir=1 Then Arrow=45
-  If BallXDir=-1 Then Arrow=46
-  If BallYDir=1 Then Arrow=48
-  If BallYDir=-1 Then Arrow=47
+Sub ReverseArrow
+  If ArrowXDir=1 Then Arrow=45
+  If ArrowXDir=-1 Then Arrow=46
+  If ArrowYDir=1 Then Arrow=48
+  If ArrowYDir=-1 Then Arrow=47
 End Sub
 
 Sub HitObstacle
@@ -679,75 +679,75 @@ Sub HitObstacle
   PlaceObstacle
   Select Case ObstacleType(t)/2
     Case ObstacleType(t)/2
-      If BallXDir<>0 Then
-        If BallXDir=1 Then
-          Select Case BallY
+      If ArrowXDir<>0 Then
+        If ArrowXDir=1 Then
+          Select Case ArrowY
             Case ObstacleY(t)
-              BallXDir=-1:BallY=BallY+1
+              ArrowXDir=-1:ArrowY=ArrowY+1
             Case ObstacleY(t)+1
-              BallXDir=0:BallYDir=1
+              ArrowXDir=0:ArrowYDir=1
           End Select
         Else
-          Select Case BallY
+          Select Case ArrowY
             Case ObstacleY(t)
-              BallYDir=-1:BallXDir=0
+              ArrowYDir=-1:ArrowXDir=0
             Case ObstacleY(t)+1
-              BallXDir=1:BallY=BallY-1
+              ArrowXDir=1:ArrowY=ArrowY-1
           End Select
         End If
       Else
-         If BallYDir=1 Then
-          Select Case BallX
+         If ArrowYDir=1 Then
+          Select Case ArrowX
             Case ObstacleX(t)
-              BallXDir=-1:BallYDir=0
+              ArrowXDir=-1:ArrowYDir=0
             Case ObstacleX(t)+1
-              BallYDir=-1:BallX=BallX-1
+              ArrowYDir=-1:ArrowX=ArrowX-1
           End Select
         Else
-          Select Case BallX
+          Select Case ArrowX
             Case ObstacleX(t)
-              BallYDir=1:BallX=BallX+1
+              ArrowYDir=1:ArrowX=ArrowX+1
             Case ObstacleX(t)+1
-              BallYDir=0:BallXDir=1
+              ArrowYDir=0:ArrowXDir=1
           End Select
         End If
       End If
     Case Int(ObstacleType(t)/2)
-      If BallXDir<>0 Then
-        If BallXDir=1 Then
-          Select Case BallY
+      If ArrowXDir<>0 Then
+        If ArrowXDir=1 Then
+          Select Case ArrowY
             Case ObstacleY(t)
-              BallXDir=0:BallYDir=-1
+              ArrowXDir=0:ArrowYDir=-1
               Case ObstacleY(t)+1
-              BallXDir=-1:BallY=BallY-1
+              ArrowXDir=-1:ArrowY=ArrowY-1
           End Select
         Else
-          Select Case BallY
+          Select Case ArrowY
             Case ObstacleY(t)
-              BallXDir=-1:BallY=BallY+1
+              ArrowXDir=-1:ArrowY=ArrowY+1
             Case ObstacleY(t)+1
-              BallXDir=0:BallYDir=1
+              ArrowXDir=0:ArrowYDir=1
           End Select
         End If
       Else
-        If BallYDir=1 Then
-          Select Case BallX
+        If ArrowYDir=1 Then
+          Select Case ArrowX
             Case ObstacleX(t)
-              BallYDir=-1:BallX=BallX+1
+              ArrowYDir=-1:ArrowX=ArrowX+1
             Case ObstacleX(t)+1
-              BallYDir=0:BallXDir=1
+              ArrowYDir=0:ArrowXDir=1
           End Select
         Else
-          Select Case BallX
+          Select Case ArrowX
             Case ObstacleX(t)
-              BallYDir=0:BallXDir=-1
+              ArrowYDir=0:ArrowXDir=-1
             Case ObstacleX(t)+1
-              BallYDir=1:BallX=BallX-1
+              ArrowYDir=1:ArrowX=ArrowX-1
           End Select
         End If
       End If
   End Select
-  ReverseBall
+  ReverseArrow
 End Sub
 
 Sub KillPlayer
@@ -767,7 +767,7 @@ Sub KillPlayer
       Case 4
         DeathColor=white
     End Select
-    Text (BallX+1)*8,(BallY+1)*8,Mid$(DeathSpiral$,DeathPos,1),,9,,DeathColor
+    Text (ArrowX+1)*8,(ArrowY+1)*8,Mid$(DeathSpiral$,DeathPos,1),,9,,DeathColor
     nextspace=Instr(MusicCopy$," ")
     DeathNote=Val(Left$(MusicCopy$,NextSpace))
     MusicCopy$=Mid$(MusicCopy$,NextSpace+1,Len(MusicCopy$))
@@ -776,7 +776,7 @@ Sub KillPlayer
     DeathPos=DeathPos+1
     If DeathPos=5 Then DeathPos=1
   Loop Until MusicCopy$=""
-  Text (BallX+1)*8,(BallY+1)*8," ",,9,,green
+  Text (ArrowX+1)*8,(ArrowY+1)*8," ",,9,,green
   Pause 300
   Do
     k$=Inkey$
@@ -790,9 +790,9 @@ Sub NewGame
   XPaddleDir=0
   YPaddleDir=0
   PaddleLength=5
-  BallXdir=0
-  BallYdir=1
-  BallInPlay=0
+  ArrowXdir=0
+  ArrowYdir=1
+  ArrowInPlay=0
   SFXPrelim=1
   t=0
   k$=""
@@ -804,7 +804,7 @@ Sub NewGame
   End If
   DrawPaddle
   ScoreLine
-  ChooseBall
+  ChooseArrow
 End Sub
 
 Sub DrawPaddle
@@ -866,20 +866,20 @@ Sub Game
       If YPaddle=29 Then YPaddle=28
       If XPaddle=0 Then XPaddle=1
       If XPaddle=33 Then XPaddle=32
-      Select Case BallInPlay
+      Select Case ArrowInPlay
         Case 0 'Not in play, move with paddle
-          Select Case BallStart
+          Select Case ArrowStart
             Case 1,3
-              BallX=XPaddle+2
+              ArrowX=XPaddle+2
               End If
             Case 2,4
-              BallY=YPaddle+2
+              ArrowY=YPaddle+2
           End Select
         Case 1
-          BallX=BallX+BallXDir
-          BallY=BallY+BallYDir
-          If BallX=0 Or BallX=37 Or BallY=0 Or BallY=33 Then
-            If BallXDir<>0 And BallY>YPaddle-1 And BallY<YPaddle+PaddleLength Then
+          ArrowX=ArrowX+ArrowXDir
+          ArrowY=ArrowY+ArrowYDir
+          If ArrowX=0 Or ArrowX=37 Or ArrowY=0 Or ArrowY=33 Then
+            If ArrowXDir<>0 And ArrowY>YPaddle-1 And ArrowY<YPaddle+PaddleLength Then
               If LastCollision=1 Or LastCollision=0 Then
                 StickyWall
               Else
@@ -887,7 +887,7 @@ Sub Game
                 HitAWall
               End If
             Else
-              If BallYDir<>0 And BallX>XPaddle-1 And BallX<XPaddle+PaddleLength Then
+              If ArrowYDir<>0 And ArrowX>XPaddle-1 And ArrowX<XPaddle+PaddleLength Then
                 If LastCollision=1 Or LastCollision=0 Then
                   StickyWall
                 Else
@@ -895,17 +895,17 @@ Sub Game
                   HitAWall
                 End If
               Else
-                Text (OldBallX+1)*8,(OldBallY+1)*8," "
+                Text (OldArrowX+1)*8,(OldArrowY+1)*8," "
                 ShowScore=Score
                 KillPlayer
                 If Lives>0 Then NewGame
               End If
             End If
           Else
-            If Grid(BallX,BallY)=100 Then
+            If Grid(ArrowX,ArrowY)=100 Then
               FoundObstacle=0
               For t=1 To NumObstacles
-                If BallX>ObstacleX(t)-1 And BallX<ObstacleX(t)+2 And BallY>ObstacleY(t)-1 And BallY<ObstacleY(t)+2 Then FoundObstacle=t
+                If ArrowX>ObstacleX(t)-1 And ArrowX<ObstacleX(t)+2 And ArrowY>ObstacleY(t)-1 And ArrowY<ObstacleY(t)+2 Then FoundObstacle=t
               Next t
               t=FoundObstacle
               Select Case ObstacleType(t)
@@ -919,8 +919,8 @@ Sub Game
                   HitObstacle
                   lastcollision=3
                 Case 3,4
-                    BallX=OldBallX
-                    BallY=OldBallY
+                    ArrowX=OldArrowX
+                    ArrowY=OldArrowY
                     PlaceObstacle
                     For i=1 To 4
                       If i/2=Int(i/2) Then
@@ -931,7 +931,7 @@ Sub Game
                         excolor=white
                       End If
                       Text (ObstacleX(t)+1)*8,(obstacleY(t)+1)*8,Chr$(explosion),,9,2,excolor
-                      Text (BallX+1)*8,(BallY+1)*8," ",,9,,yellow,black
+                      Text (ArrowX+1)*8,(ArrowY+1)*8," ",,9,,yellow,black
                       Play tone 2093,0,200
                       Pause 100
                       If i/2=Int(i/2) Then
@@ -942,7 +942,7 @@ Sub Game
                         excolor=yellow
                       End If
                       Text (ObstacleX(t)+1)*8,(ObstacleY(t)+1)*8,Chr$(explosion),,9,2,excolor
-                      Text (BallX+1)*8,(BallY+1)*8,Chr$(arrow),,9,,green,black
+                      Text (ArrowX+1)*8,(ArrowY+1)*8,Chr$(arrow),,9,,green,black
                       Pause 200
                     Next i
                     ObstacleType(t)=2
@@ -952,21 +952,21 @@ Sub Game
                     If Lives>0 Then NewGame
               End Select
             Else
-              If Grid(BallX,BallY)=1 Then
-                If BallX+BallXDir<>1 And BallX+BallXDir<>36 And BallY+BallYDir<>1 And BallY+BallYDir<>32 Then
-                  If Grid(BallX+BallXDir,BallY+BallYDir)=0 Then
-                    Grid(BallX+BallXDir,BallY+BallYDir)=1
-                    Grid(BallX,BallY)=0
-                    Text (BallX+BallXDir+1)*8,(BallY+BallYDir+1)*8,"+",,9,,cyan,black
+              If Grid(ArrowX,ArrowY)=1 Then
+                If ArrowX+ArrowXDir<>1 And ArrowX+ArrowXDir<>36 And ArrowY+ArrowYDir<>1 And ArrowY+ArrowYDir<>32 Then
+                  If Grid(ArrowX+ArrowXDir,ArrowY+ArrowYDir)=0 Then
+                    Grid(ArrowX+ArrowXDir,ArrowY+ArrowYDir)=1
+                    Grid(ArrowX,ArrowY)=0
+                    Text (ArrowX+ArrowXDir+1)*8,(ArrowY+ArrowYDir+1)*8,"+",,9,,cyan,black
                   Else
-                    BallX=OldBallX
-                    BallY=OldBallY
+                    ArrowX=OldArrowX
+                    ArrowY=OldArrowY
                  End If
                 End If
-                BallXDir=-BallXDir
-                BallYDir=-BallYDir
+                ArrowXDir=-ArrowXDir
+                ArrowYDir=-ArrowYDir
                 lastcollision=1
-                ReverseBall
+                ReverseArrow
                 Ricochet
               End If
             End If
@@ -974,25 +974,25 @@ Sub Game
         End If
       End If
     End Select
-    If OldBallX<>BallX Or OldBallY<>BallY Then
-      If Grid(OldBallX,OldBallY)=0 Then
-        Text (OldBallX+1)*8,(OldBallY+1)*8," ",,9,,,black
+    If OldArrowX<>ArrowX Or OldArrowY<>ArrowY Then
+      If Grid(OldArrowX,OldArrowY)=0 Then
+        Text (OldArrowX+1)*8,(OldArrowY+1)*8," ",,9,,,black
       Else
-        If Grid(OldBallX,OldBallY)=1 Then
-          Text (OldBallX+1)*8,(OldBallY+1)*8,"+",,9,1,cyan'black
+        If Grid(OldArrowX,OldArrowY)=1 Then
+          Text (OldArrowX+1)*8,(OldArrowY+1)*8,"+",,9,1,cyan'black
         End If
         If t<>0 Then
           PlaceObstacle
         End If
       End If
-      Text (BallX+1)*8,(BallY+1)*8,Chr$(arrow),,9,,green
-      OldBallX=BallX
-      OldBallY=BallY
+      Text (ArrowX+1)*8,(ArrowY+1)*8,Chr$(arrow),,9,,green
+      OldArrowX=ArrowX
+      OldArrowY=ArrowY
     End If
     If XPaddle<>OldXPaddle Then
       If XPaddle<1 Or XPaddle>32 Then
         XPaddle=OldXPaddle
-        If BallInPlay=0 And (Ballstart=1 Or BallStart=3) Then BallX=XPaddle+2
+        If ArrowInPlay=0 And (Arrowstart=1 Or ArrowStart=3) Then ArrowX=XPaddle+2
         DrawPaddle
       Else
         DrawPaddle
@@ -1001,7 +1001,7 @@ Sub Game
     If YPaddle<>OldYPaddle Then
       If YPaddle=0 Or YPaddle=29 Then
         YPaddle=OldYPaddle
-        If BallInPlay=0 And (Ballstart=2 Or BallStart=4) Then BallY=YPaddle+2
+        If ArrowInPlay=0 And (Arrowstart=2 Or ArrowStart=4) Then ArrowY=YPaddle+2
       Else
         DrawPaddle
       End If
@@ -1024,7 +1024,7 @@ Sub Game
         Loop Until kk$<>""
         DrawInfoAreA
       Case "e"
-        If BallInPlay=0 Then
+        If ArrowInPlay=0 Then
           GameToEditor
           DrawPlayingArea
           Clearinfoblock
@@ -1032,9 +1032,9 @@ Sub Game
 '          EditorToGame
           DrawInfoArea
           DrawPlayingArea
-          BallInPlay=0
+          ArrowInPlay=0
           DrawPaddle
-          ChooseBall
+          ChooseArrow
         End If
         k$=""
       Case " ",Chr$(10),Chr$(13)
@@ -1043,16 +1043,16 @@ Sub Game
           SpaceAction$="stop paddle"
           DrawInfoArea
         End If
-        If BallInPlay=1 Then
+        If ArrowInPlay=1 Then
           XPaddleDir=0
           YPaddleDir=0
         Else
-          BallInPlay=1
+          ArrowInPlay=1
           DrawInfoArea
         End If
       Case Chr$(9)
-        If BallInPlay=0 Then
-          ChooseBall
+        If ArrowInPlay=0 Then
+          ChooseArrow
         End If
     End Select
     CumulativePause=CumulativePause+PauseLength
@@ -1077,7 +1077,7 @@ Sub Game
   ClearInfoBlock
   ScorePos=0
   ScoreMessage$=" Score: "+Str$(score)+" "
-  Text (BallX+1)*8,(BallY+1)*8," "
+  Text (ArrowX+1)*8,(ArrowY+1)*8," "
   DrawPaddle
   For t=1 To Len(ScoreMessage$)
     If t<8 Then
