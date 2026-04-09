@@ -671,9 +671,7 @@ Do
             End If
           End If
           shotY(t)=ShotY(t)+(ShotDir(t))
-ShotX(t)<+27) And (OldShotY(t)>y And OldShotY(t)<y+4))) Then
-
-Text (ShotX(t)*8)+7,OldShotY(t)*20,"c",,8,2
+          Text (ShotX(t)*8)+7,OldShotY(t)*20,"c",,8,2
           Text (ShotX(t)*8)+7,ShotY(t)*20,Chr$(shot),,8,2,shotcolr
           OldShoty(t)=ShotY(t)
           If ShotDir(t)=1 And (ShotX(t)>px-3 And ShotX(t)<px+3) And ShotY(t)>14 And DestructOn=0 And DeadShip=0 Then 'Player Shot
